@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using HarmonyLib;
+using UnityEngine;
+
+namespace AtO_Loader.Patches;
+
+[HarmonyPatch(typeof(Globals), "CreateCardClones")]
+public class CreateCardClones
+{
+    [HarmonyPrefix]
+    static void SetPatch(Dictionary<string, CardData> ____CardsSource, ref string ___cardsText)
+    {
+        Directory.CreateDirectory(@"BepInEx\plugins\cards\");
+        foreach (string fileName in Directory.GetFiles(@"BepInEx\plugins\cards\", "*.json"))
+        {
+            try
+            {
+                var json = File.ReadAllText(fileName);
+                var newCard = ScriptableObject.CreateInstance<CardData>();
+                JsonUtility.FromJsonOverwrite(json, newCard);
+                newCard.Id = newCard.Id.ToLower();
+                ____CardsSource.Add(newCard.Id, newCard);
+                ___cardsText = string.Concat(new string[]
+                {
+                    ___cardsText,
+                    "c_",
+                    newCard.Id,
+                    "_name=",
+                    Functions.NormalizeTextForArchive(newCard.CardName),
+                    "\n"
+                });
+            }
+            catch (Exception ex)
+            {
+                Plugin.Logger.LogError($"{nameof(CreateCardClones)}: Failed to parse card data from json '{fileName}'");
+                Plugin.Logger.LogError(ex);
+            }
+        }
+    }
+    
+    
+}
