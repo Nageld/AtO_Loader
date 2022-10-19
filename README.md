@@ -7,7 +7,9 @@ TODO
 ## Usage
 
  1. Make a folder in BepInEx\plugins called `cards`
- 2. Place json files into BepInEx\plugins\cards\
+ 2. Place json files into:
+	BepInEx\plugins\cards\{cardName}\{cardName}.json
+	BepInEx\plugins\cards\{cardName}\{cardName}.png
 
 ## JSON template
 Minimum for card to show up  
