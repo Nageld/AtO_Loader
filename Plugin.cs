@@ -18,7 +18,8 @@ public partial class Plugin : BaseUnityPlugin
     {
         Plugin.Logger = base.Logger;
         harmony.PatchAll(typeof(CreateCardClones));
-        // harmony.PatchAll(typeof(Unlocked));
+        harmony.PatchAll(typeof(IsCardUnlocked));
         harmony.PatchAll(typeof(GetKeyNotesData));
+        harmony.PatchAll(typeof(LoadPlayerData));
     }
 }
