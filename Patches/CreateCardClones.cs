@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using AtO_Loader.Utils;
 using HarmonyLib;
 using UnityEngine;
 
@@ -13,13 +14,15 @@ public class CreateCardClones
     static void SetPatch(Dictionary<string, CardData> ____CardsSource, ref string ___cardsText)
     {
         Directory.CreateDirectory(@"BepInEx\plugins\cards\");
-        foreach (string fileName in Directory.GetFiles(@"BepInEx\plugins\cards\", "*.json"))
+        foreach (string fileName in Directory.GetFiles(@"BepInEx\plugins\cards\", "*.json", SearchOption.AllDirectories))
         {
             try
             {
                 var json = File.ReadAllText(fileName);
                 var newCard = ScriptableObject.CreateInstance<CardData>();
                 JsonUtility.FromJsonOverwrite(json, newCard);
+                var fileInfo = new FileInfo(fileName);
+                newCard.LoadSprite(fileName.Replace("json", "png", StringComparison.OrdinalIgnoreCase));
                 newCard.Id = newCard.Id.ToLower();
                 ____CardsSource.Add(newCard.Id, newCard);
                 ___cardsText = string.Concat(new string[]
@@ -39,6 +42,4 @@ public class CreateCardClones
             }
         }
     }
-    
-    
 }
