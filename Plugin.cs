@@ -21,5 +21,8 @@ public partial class Plugin : BaseUnityPlugin
         harmony.PatchAll(typeof(IsCardUnlocked));
         harmony.PatchAll(typeof(GetKeyNotesData));
         harmony.PatchAll(typeof(LoadPlayerData));
+        harmony.PatchAll(typeof(SetScore));
+        harmony.PatchAll(typeof(SetWeeklyScore));
+        harmony.PatchAll(typeof(SetObeliskScore));
     }
 }
