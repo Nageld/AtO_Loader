@@ -24,13 +24,8 @@ public class CreateCardClones
                 var fileInfo = new FileInfo(fileName);
                 newCard.LoadSprite(fileName.Replace("json", "png", StringComparison.OrdinalIgnoreCase));
                 newCard.Id = newCard.Id.ToLower();
-                if (____CardsSource.ContainsKey(newCard.Id))
+                if (!____CardsSource.ContainsKey(newCard.Id))
                 {
-                    ____CardsSource[newCard.Id] = newCard;
-                }
-                else
-                {
-                    ____CardsSource.Add(newCard.Id, newCard);
                     ___cardsText = string.Concat(new string[]
                     {
                         ___cardsText,
@@ -41,6 +36,7 @@ public class CreateCardClones
                         "\n"
                     });
                 }
+                ____CardsSource[newCard.Id] = newCard;
             }
             catch (Exception ex)
             {
