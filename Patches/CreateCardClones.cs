@@ -24,16 +24,23 @@ public class CreateCardClones
                 var fileInfo = new FileInfo(fileName);
                 newCard.LoadSprite(fileName.Replace("json", "png", StringComparison.OrdinalIgnoreCase));
                 newCard.Id = newCard.Id.ToLower();
-                ____CardsSource.Add(newCard.Id, newCard);
-                ___cardsText = string.Concat(new string[]
+                if (____CardsSource.ContainsKey(newCard.Id))
                 {
-                    ___cardsText,
-                    "c_",
-                    newCard.Id,
-                    "_name=",
-                    Functions.NormalizeTextForArchive(newCard.CardName),
-                    "\n"
-                });
+                    ____CardsSource[newCard.Id] = newCard;
+                }
+                else
+                {
+                    ____CardsSource.Add(newCard.Id, newCard);
+                    ___cardsText = string.Concat(new string[]
+                    {
+                        ___cardsText,
+                        "c_",
+                        newCard.Id,
+                        "_name=",
+                        Functions.NormalizeTextForArchive(newCard.CardName),
+                        "\n"
+                    });
+                }
             }
             catch (Exception ex)
             {
