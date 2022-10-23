@@ -23,7 +23,14 @@ public class CreateCardClones
                 JsonUtility.FromJsonOverwrite(json, newCard);
                 var fileInfo = new FileInfo(fileName);
                 newCard.LoadSprite(fileName.Replace("json", "png", StringComparison.OrdinalIgnoreCase));
-                newCard.Id = newCard.Id.ToLower();
+                if (string.IsNullOrWhiteSpace(newCard.Id))
+                {
+                    newCard.Id = Guid.NewGuid().ToString();
+                }
+                else
+                {
+                    newCard.Id = newCard.Id.ToLower();
+                }
                 if (!____CardsSource.ContainsKey(newCard.Id))
                 {
                     ___cardsText = string.Concat(new string[]
