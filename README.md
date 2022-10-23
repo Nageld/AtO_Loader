@@ -26,3 +26,15 @@ TODO
 ## Card Images
 
 Card images need to be 256x256px png for it to scale properly in game
+
+There are two ways to specify a card image either implicitly or explicitly.
+
+To implicitly set a card image, in the json file please set the field 'ImageFileName' to the file name of the image.
+Example: "ImageFileName": "TestCard.png"
+Implicit card images is generally used to set more then one card with the same image.
+
+To explicitly set a card image, place the image with the same name as the json file in the same folder.
+Example:
+	BepInEx\plugins\cards\TestCard\TestCard.json
+	BepInEx\plugins\cards\TestCard\TestCard.png
+	

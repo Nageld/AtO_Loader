@@ -2,6 +2,8 @@
 {
     public class CardDataWrapper : CardData
     {
+        public string ImageFileName;
+
         /// <summary>
         /// Fires before MatchManager.CastCard gets called.
         /// </summary>
