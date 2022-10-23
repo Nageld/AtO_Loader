@@ -46,6 +46,22 @@ public class CreateCardClones
                 Plugin.Logger.LogError(ex);
             }
         }
+
+        // have to loop again cause of the rare card references
+        foreach (var card in ____CardsSource.Values)
+        {
+            if (card is CardDataWrapper cardDataWrapper && !string.IsNullOrWhiteSpace(cardDataWrapper.upgradesToC))
+            {
+                if (____CardsSource.TryGetValue(cardDataWrapper.upgradesToC, out var rareCard))
+                {
+                    cardDataWrapper.UpgradesToRare = rareCard;
+                }
+                else
+                {
+                    Plugin.Logger.LogError($"{nameof(CreateCardClones)}: Card '{card.Id}' has 'upgradeToC' '{cardDataWrapper.upgradesToC}' from custom cards.");
+                }
+            }
+        }
     }
 
     private static CardData LoadCard(FileInfo cardFileInfo)

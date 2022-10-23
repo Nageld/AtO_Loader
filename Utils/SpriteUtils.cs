@@ -8,9 +8,9 @@ namespace AtO_Loader.Utils
     {
         public static void LoadSprite(this CardDataWrapper card, FileInfo cardFileInfo)
         {
-            var filePath = string.IsNullOrWhiteSpace(card.ImageFileName) ?
+            var filePath = string.IsNullOrWhiteSpace(card.imageFileName) ?
                 cardFileInfo.FullName.Replace("json", "png", StringComparison.OrdinalIgnoreCase) :
-                Path.Combine(cardFileInfo.Directory.FullName, card.ImageFileName);
+                Path.Combine(cardFileInfo.Directory.FullName, card.imageFileName);
 
             if (File.Exists(filePath))
             {
