@@ -25,7 +25,7 @@ public class CreateCardClones
                 newCard.LoadSprite(fileName.Replace("json", "png", StringComparison.OrdinalIgnoreCase));
                 if (string.IsNullOrWhiteSpace(newCard.Id))
                 {
-                    newCard.Id = Guid.NewGuid().ToString();
+                    newCard.Id = Guid.NewGuid().ToString().ToLower();
                 }
                 else
                 {
