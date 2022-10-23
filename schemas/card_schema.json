@@ -1,0 +1,203 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Custom Card Schema",
+    "description": "Describes a card to generate",
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+      "cardName",
+      "id",
+      "$schema"
+    ],
+    "properties": {
+      "$schema":{
+        "type": "string"
+      },
+      "cardName": {
+        "type": "string",
+        "description": "Displayed name of the card",
+        "minLength": 1
+      },
+      "id": {
+        "type": "string",
+        "description": "Internal name of the card",
+        "minLength": 1
+      },
+      "upgradesTo1": {
+        "type": "string",
+        "description": "Id of the first upgrade option for the card",
+        "minLength": 1
+      },
+      "upgradesTo2": {
+        "type": "string",
+        "description": "Id of the second upgrade option for the card",
+        "minLength": 1
+      },
+      "baseCard": {
+        "type": "string",
+        "description": "Id of the unupgraded card",
+        "minLength": 0
+      },
+      "description": {
+        "type": "string",
+        "description": "DOES NOTHING ATM",
+        "minLength": 1
+      },
+      "effectCaster": {
+        "type": "string",
+        "description": "Visual effect when the card is played",
+        "enum": [
+          "meleecast1"
+        ]
+      },
+      "effectPostCastDelay": {
+        "type": "number",
+        "format": "float",
+        "description": "Delay on play",
+        "minLength": 1
+      },
+      "effectCastCenter": {
+        "type": "boolean",
+        "description": "Move to Center on cast",
+        "default": false
+      },
+      "effectTrailSpeed": {
+        "type": "number",
+        "description": "TODO",
+        "minLength": 1
+      },
+      "effectTarget": {
+        "type": "string",
+        "description": "TODO",
+        "minLength": 1,
+        "enum": [
+          "slashred1"
+        ]
+      },
+      "maxInDeck": {
+        "type": "number",
+        "description": "TODO/unimplmented?"
+      },
+      "cardType": {
+        "type": "integer",
+        "description": "0: None\n1: Melee Attack\n2: Ranged Attack\n3: Magic Attack\n4: Defense\n5: Fire Spell\n6: Cold Spell\n7: Lightning Spell\n8: Mind Spell\n9: Shadow Spell\n10: Holy Spell\n11: Curse Spell\n12: Healing Spell\n13: Book\n14: Small Weapon\n15: Song\n16: Skill\n17: Power\n18: Injury\n19: Attack\n20: Spell\n21: Boon\n22: Weapon\n23: Armor\n24: Jewelry\n25: Accesory\n26: Pet\n27: Corruption\n28: Enchantment",
+        "enum": [
+          0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28
+        ]
+      },
+      "cardTypeAux": {
+        "type": "array",
+        "description": "0: None\n1: Melee Attack\n2: Ranged Attack\n3: Magic Attack\n4: Defense\n5: Fire Spell\n6: Cold Spell\n7: Lightning Spell\n8: Mind Spell\n9: Shadow Spell\n10: Holy Spell\n11: Curse Spell\n12: Healing Spell\n13: Book\n14: Small Weapon\n15: Song\n16: Skill\n17: Power\n18: Injury\n19: Attack\n20: Spell\n21: Boon\n22: Weapon\n23: Armor\n24: Jewelry\n25: Accesory\n26: Pet\n27: Corruption\n28: Enchantment",
+        "items": [
+          {
+            "type": "integer",
+            "enum": [
+              0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28
+            ]
+          }
+        ]
+      },
+      "energyCost": {
+        "type": "number",
+        "description": "Energy Cost",
+        "minimum": 0
+      },
+      "targetPosition": {
+        "type": "integer",
+        "description": "0:Anywhere\n1:Front\n2:Random\n3:Back\n4:Middle\n5:Slowest\n6:Fastest\n7:LeastHP\n8:MostHP",
+        "enum": [
+          0,1,2,3,4,5,6,7,8
+        ]
+      },
+      "damageType": {
+        "type": "integer",
+        "description": "0:None\n1:Slashing\n2:Blunt\n3:Piercing\n4:Fire\n5:Cold\n6:Lightning\n7:Mind\n8:Holy\n9:Shadow\n10:All",
+        "enum": [
+          0,1,2,3,4,5,6,7,8,9,10
+        ]
+      },
+      "cardUpgraded": {
+        "type": "number",
+        "description":  "0:No\n,1:A\n,2:B\n,3:Corrupted\n",
+        "enum": [0,1,2,3]
+      },
+      "upgradedFrom": {
+        "type": "string",
+        "description": "Base Card Id",
+        "minLength": 0
+      },
+      "effectPreAction": {
+        "type": "string",
+        "description": "Visual effect on the player when the card is played",
+        "enum": [
+          "warriorself1"
+        ]
+      },
+      "cardRarity": {
+        "type": "number",
+        "description":  "0:Common\n,1:Uncommon\n,2:Rare\n,3:Epic,4:Mythic\n",
+        "enum": [0,1,2,3,4]
+      },
+      "cardClass": {
+        "type": "number",
+        "description":  "0:Warrior1:Mage\n2:Healer\n3:Scout\n4:MagicKnight\n5:Monster\n6:Injury\n7:Boon\n8:Item\n9:Special\n10:Enchantment\n11:None",
+        "enum": [0,1,2,3,4,5,6,7,8,9,10,11]
+      },
+      "playable": {
+        "type": "boolean",
+        "description": "Can you play the card from hand",
+        "default": true
+      },
+      "targetSide": {
+        "type": "number",
+        "description":  "0:Enemy\n,1:Friend\n,2:Anyone\n,3:Self,4:Ally\n",
+        "enum": [0,1,2,3,4]
+      },
+      "effectRepeat": {
+        "type": "number",
+        "description": "Amount of times the effect triggers on play"
+      },
+      "addCard": {
+        "type": "number",
+        "description": "Amount of cards added to hand"
+      },
+      "addCardChoose": {
+        "type": "number",
+        "description": "Amount of cards offered"
+      },
+      "addCardFrom": {
+        "type": "number",
+        "description":  "0:Deck\n,1:Discard\n,2:Game\n,3:Hand,4:Vanish\n",
+        "enum": [0,1,2,3,4]
+      },
+      "addCardPlace": {
+        "type": "number",
+        "description":  "0:Discard\n,1:TopDeck\n,2:BottomDeck\n,3:RandomDeck,4:Vanish\n,5:Hand\n,6:Cast\n",
+        "enum": [0,1,2,3,4,5,6]
+      },
+      "addCardReducedCost": {
+        "type": "number",
+        "description": "Reduction in added card cost"
+      },
+      "addCardVanish": {
+        "type": "boolean",
+        "description": "Does the added card vanish"
+      },
+      "showInTome": {
+        "type": "boolean",
+        "description": "Does the card show in the Tome of Knowledge"
+      },
+      "vanish": {
+        "type": "boolean",
+        "description": "Does the card vanish"
+      },
+      "imageFileName": {
+        "type": "string",
+        "description": "Path to image for card"
+      },
+      "damage": {
+        "type": "number",
+        "description": "Damage it deals"
+      }
+    }
+  }
