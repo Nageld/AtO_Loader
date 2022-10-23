@@ -22,3 +22,7 @@ Minimum for card to show up
 ```
 ## JSON tags explained
 TODO
+
+## Card Images
+
+Card images need to be 256x256 image for it to scale properly in game

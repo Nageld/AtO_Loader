@@ -53,7 +53,7 @@ public class CreateCardClones
         var json = File.ReadAllText(cardFileInfo.FullName);
         var newCard = ScriptableObject.CreateInstance<CardData>();
         JsonUtility.FromJsonOverwrite(json, newCard);
-        newCard.LoadSprite(cardFileInfo.Name.Replace("json", "png", StringComparison.OrdinalIgnoreCase));
+        newCard.LoadSprite(cardFileInfo.FullName.Replace("json", "png", StringComparison.OrdinalIgnoreCase));
         if (string.IsNullOrWhiteSpace(newCard.Id))
         {
             newCard.Id = Guid.NewGuid().ToString().ToLower();

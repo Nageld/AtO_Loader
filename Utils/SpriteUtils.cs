@@ -22,6 +22,6 @@ namespace AtO_Loader.Utils
             return TextureToSprite(texture);
         }
 
-        private static Sprite TextureToSprite(Texture2D texture) => Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), Mathf.Max(texture.width / 3f, texture.height / 3f), 0, SpriteMeshType.FullRect);
+        private static Sprite TextureToSprite(Texture2D texture) => Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
     }
 }
