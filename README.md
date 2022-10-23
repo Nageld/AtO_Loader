@@ -7,7 +7,7 @@ TODO
 ## Usage
 
  1. Make a folder in BepInEx\plugins called `cards`
- 2. Place json files into:
+ 2. Place files into:
 	BepInEx\plugins\cards\{cardName}\{cardName}.json
 	BepInEx\plugins\cards\{cardName}\{cardName}.png
 
@@ -25,4 +25,4 @@ TODO
 
 ## Card Images
 
-Card images need to be 256x256 image for it to scale properly in game
+Card images need to be 256x256px png for it to scale properly in game
