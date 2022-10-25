@@ -90,7 +90,6 @@ public class CreateCardClones
 
         newCard.CardClass = cardClass;
         newCard.Id = newCard.Id.AppendNotNullOrWhiteSpace(cardClassString);
-        newCard.CardName = newCard.CardName.AppendNotNullOrWhiteSpace(cardClassString);
         newCard.BaseCard = newCard.BaseCard.AppendNotNullOrWhiteSpace(cardClassString);
         newCard.UpgradedFrom = newCard.UpgradedFrom.AppendNotNullOrWhiteSpace(cardClassString);
         newCard.UpgradesTo1 = newCard.UpgradesTo1.AppendNotNullOrWhiteSpace(cardClassString);
