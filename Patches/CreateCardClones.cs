@@ -44,13 +44,20 @@ public class CreateCardClones
             try
             {
                 var newCard = LoadCardFromDisk(cardFileInfo);
+                if (newCard == null)
+                {
+                    continue;
+                }
 
                 if ((int)newCard.CardClass == -1)
                 {
                     foreach (var cardClass in cardClasses)
                     {
                         var clonedNewCard = MultiClassCardUpdate(cardFileInfo, cardClass);
-                        AddCardInternalDictionary(____CardsSource, ref ___cardsText, clonedNewCard);
+                        if (clonedNewCard != null)
+                        {
+                            AddCardInternalDictionary(____CardsSource, ref ___cardsText, clonedNewCard);
+                        }
                     }
                     ScriptableObject.Destroy(newCard);
                 }
@@ -86,6 +93,11 @@ public class CreateCardClones
     private static CardDataWrapper MultiClassCardUpdate(FileInfo cardFileInfo, in CardClass cardClass)
     {
         var newCard = LoadCardFromDisk(cardFileInfo);
+        if (newCard == null)
+        {
+            return null;
+        }
+
         var cardClassString = cardClass.ToString().ToLower();
 
         newCard.CardClass = cardClass;
