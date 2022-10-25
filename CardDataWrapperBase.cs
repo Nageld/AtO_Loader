@@ -4,7 +4,13 @@
     {
         // these must be fields and camel case is for consistency - blame JsonUtility
         public string imageFileName;
-        public string upgradesToC;
+        private string upgradesToC;
+
+        public string UpgradesToC
+        {
+            get => this.upgradesToC;
+            set => this.upgradesToC = value;
+        }
 
         /// <summary>
         /// Fires before MatchManager.CastCard gets called.

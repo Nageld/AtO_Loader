@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using AtO_Loader.Utils;
 using HarmonyLib;
 using UnityEngine;
+using static Enums;
 
 namespace AtO_Loader.Patches;
 
@@ -11,9 +14,24 @@ namespace AtO_Loader.Patches;
 public class CreateCardClones
 {
     private const string CardsDirectoryPath = @"BepInEx\plugins\cards\";
+    private static readonly Regex InvalidIdCharactersRegex = new("[^a-zA-Z0-9]", RegexOptions.Compiled);
+    private static readonly Dictionary<CardUpgraded, string> cardUpgradeAppendString = new()
+    {
+        [CardUpgraded.A] = "a",
+        [CardUpgraded.B] = "b",
+        [CardUpgraded.Rare] = "rare",
+    };
+    private static readonly List<CardClass> cardClasses = new()
+    {
+        CardClass.Warrior,
+        CardClass.Mage,
+        CardClass.Healer,
+        CardClass.Scout,
+    };
+    public static Dictionary<CardClass, List<string>> CustomCards = new();
 
     [HarmonyPrefix]
-    static void SetPatch(Dictionary<string, CardData> ____CardsSource, ref string ___cardsText)
+    static void LoadCustomCards(Dictionary<string, CardData> ____CardsSource, ref string ___cardsText)
     {
         var cardDirectoryInfo = new DirectoryInfo(CardsDirectoryPath);
         if (!cardDirectoryInfo.Exists)
@@ -25,20 +43,21 @@ public class CreateCardClones
         {
             try
             {
-                var newCard = LoadCard(cardFileInfo);
-                if (!____CardsSource.ContainsKey(newCard.Id))
+                var newCard = LoadCardFromDisk(cardFileInfo);
+
+                if ((int)newCard.CardClass == -1)
                 {
-                    ___cardsText = string.Concat(new string[]
+                    foreach (var cardClass in cardClasses)
                     {
-                        ___cardsText,
-                        "c_",
-                        newCard.Id,
-                        "_name=",
-                        Functions.NormalizeTextForArchive(newCard.CardName),
-                        "\n"
-                    });
+                        var clonedNewCard = MultiClassCardUpdate(cardFileInfo, cardClass);
+                        AddCardInternalDictionary(____CardsSource, ref ___cardsText, clonedNewCard);
+                    }
+                    ScriptableObject.Destroy(newCard);
                 }
-                ____CardsSource[newCard.Id] = newCard;
+                else
+                {
+                    AddCardInternalDictionary(____CardsSource, ref ___cardsText, newCard);
+                }
             }
             catch (Exception ex)
             {
@@ -47,24 +66,82 @@ public class CreateCardClones
             }
         }
 
-        // have to loop again cause of the rare card references
-        foreach (var card in ____CardsSource.Values)
+        // have to loop again cause of the rare card reference assignment
+        foreach (var cardDataWrapper in ____CardsSource.Values.OfType<CardDataWrapper>())
         {
-            if (card is CardDataWrapper cardDataWrapper && !string.IsNullOrWhiteSpace(cardDataWrapper.upgradesToC))
+            if (!string.IsNullOrWhiteSpace(cardDataWrapper.UpgradesToC))
             {
-                if (____CardsSource.TryGetValue(cardDataWrapper.upgradesToC, out var rareCard))
+                if (____CardsSource.TryGetValue(cardDataWrapper.UpgradesToC, out var rareCard))
                 {
                     cardDataWrapper.UpgradesToRare = rareCard;
                 }
                 else
                 {
-                    Plugin.Logger.LogError($"{nameof(CreateCardClones)}: Card '{card.Id}' has 'upgradeToC' '{cardDataWrapper.upgradesToC}' from custom cards.");
+                    Plugin.Logger.LogError($"{nameof(CreateCardClones)}: Card '{cardDataWrapper.Id}' has 'upgradeToC' '{cardDataWrapper.UpgradesToC}' from custom cards, which cannot be found.");
                 }
             }
         }
     }
 
-    private static CardData LoadCard(FileInfo cardFileInfo)
+    private static CardDataWrapper MultiClassCardUpdate(FileInfo cardFileInfo, in CardClass cardClass)
+    {
+        var newCard = LoadCardFromDisk(cardFileInfo);
+        var cardClassString = cardClass.ToString().ToLower();
+
+        newCard.CardClass = cardClass;
+        newCard.Id = newCard.Id.AppendNotNullOrWhiteSpace(cardClassString);
+        newCard.CardName = newCard.CardName.AppendNotNullOrWhiteSpace(cardClassString);
+        newCard.BaseCard = newCard.BaseCard.AppendNotNullOrWhiteSpace(cardClassString);
+        newCard.UpgradedFrom = newCard.UpgradedFrom.AppendNotNullOrWhiteSpace(cardClassString);
+        newCard.UpgradesTo1 = newCard.UpgradesTo1.AppendNotNullOrWhiteSpace(cardClassString);
+        newCard.UpgradesTo2 = newCard.UpgradesTo2.AppendNotNullOrWhiteSpace(cardClassString);
+        newCard.UpgradesToC = newCard.UpgradesToC.AppendNotNullOrWhiteSpace(cardClassString);
+        return newCard;
+    }
+
+    private static void AddCardInternalDictionary(Dictionary<string, CardData> cardsSource, ref string cardsText, CardDataWrapper newCard)
+    {
+        Plugin.Logger.LogInfo($"Loading Custom Card: {newCard.CardClass} {newCard.Id}");
+
+        switch (newCard.CardUpgraded)
+        {
+            case CardUpgraded.No:
+                newCard.UpgradesTo1 = newCard.UpgradesTo1.AppendNotNullOrWhiteSpace("a");
+                newCard.UpgradesTo2 = newCard.UpgradesTo2.AppendNotNullOrWhiteSpace("b");
+                newCard.UpgradesToC = newCard.UpgradesToC.AppendNotNullOrWhiteSpace("rare");
+                break;
+            case CardUpgraded.A:
+            case CardUpgraded.B:
+            case CardUpgraded.Rare:
+                newCard.Id = newCard.Id.AppendNotNullOrWhiteSpace(cardUpgradeAppendString[newCard.CardUpgraded]);
+                break;
+        }
+
+        newCard.Id = newCard.Id.ToLower();
+
+        if (!cardsSource.ContainsKey(newCard.Id))
+        {
+            cardsText = string.Concat(new string[]
+            {
+                cardsText,
+                "c_",
+                newCard.Id,
+                "_name=",
+                Functions.NormalizeTextForArchive(newCard.CardName),
+                "\n"
+            });
+        }
+        cardsSource[newCard.Id] = newCard;
+
+        if (!CustomCards.ContainsKey(newCard.CardClass))
+        {
+            CustomCards[newCard.CardClass] = new List<string>();
+        }
+
+        CustomCards[newCard.CardClass].Add(newCard.Id);
+    }
+
+    private static CardDataWrapper LoadCardFromDisk(FileInfo cardFileInfo)
     {
         var json = File.ReadAllText(cardFileInfo.FullName);
         var newCard = ScriptableObject.CreateInstance<CardDataWrapper>();
@@ -75,6 +152,11 @@ public class CreateCardClones
             newCard.Id = Guid.NewGuid().ToString().ToLower();
             Plugin.Logger.LogWarning($"Card: '{newCard.CardName}' is missing the required field 'id'. Path: {cardFileInfo.FullName}");
             newCard.CardName = "Missing ID";
+        }
+        else if (InvalidIdCharactersRegex.IsMatch(newCard.Id))
+        {
+            Plugin.Logger.LogError($"Card: '{newCard.CardName} has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
+            return null;
         }
         else
         {
