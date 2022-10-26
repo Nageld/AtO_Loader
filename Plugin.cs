@@ -1,4 +1,5 @@
 ﻿using AtO_Loader.Patches;
+using AtO_Loader.Patches.CustomDataLoader;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
@@ -18,6 +19,7 @@ public partial class Plugin : BaseUnityPlugin
     {
         Plugin.Logger = base.Logger;
         harmony.PatchAll(typeof(CreateCardClones));
+        harmony.PatchAll(typeof(CreateGameContent));
         harmony.PatchAll(typeof(IsCardUnlocked));
         harmony.PatchAll(typeof(GetKeyNotesData));
         harmony.PatchAll(typeof(LoadPlayerData));

@@ -6,16 +6,21 @@ namespace AtO_Loader.Utils
 {
     public static class SpriteUtils
     {
-        public static void LoadSprite(this CardDataWrapper card, FileInfo cardFileInfo)
+        public static void LoadSprite(this CardDataWrapper card, FileInfo cardFileInfo) 
+            => card.Sprite = LoadSprite(card.imageFileName, cardFileInfo);
+
+        private static Sprite LoadSprite(string fileName, FileInfo fileInfo)
         {
-            var filePath = string.IsNullOrWhiteSpace(card.imageFileName) ?
-                cardFileInfo.FullName.Replace("json", "png", StringComparison.OrdinalIgnoreCase) :
-                Path.Combine(cardFileInfo.Directory.FullName, card.imageFileName);
+            var filePath = string.IsNullOrWhiteSpace(fileName) ?
+                fileInfo.FullName.Replace("json", "png", StringComparison.OrdinalIgnoreCase) :
+                Path.Combine(fileInfo.Directory.FullName, fileName);
 
             if (File.Exists(filePath))
             {
-                card.Sprite = PathToSprite(filePath);
+                return PathToSprite(filePath);
             }
+
+            return null;
         }
 
         private static Sprite PathToSprite(string filePath)
@@ -29,6 +34,7 @@ namespace AtO_Loader.Utils
             return sprite;
         }
 
-        private static Sprite TextureToSprite(Texture2D texture) => Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
+        private static Sprite TextureToSprite(Texture2D texture) 
+            => Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
     }
 }
