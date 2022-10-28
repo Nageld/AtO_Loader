@@ -4,7 +4,8 @@ public class SubClassDataWrapperBase : SubClassData
 { 
     private void Awake()
     {
-    }  
+    }
+
     public int[] cardCounts;
     public string[] cardIds;
     public string trait1ACard;
