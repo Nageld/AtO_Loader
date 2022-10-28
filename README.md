@@ -8,8 +8,10 @@ TODO
 
  1. Make a folder in BepInEx\plugins called `cards`
  2. Place files into:
+ ```
 	BepInEx\plugins\cards\{cardName}\{cardName}.json
 	BepInEx\plugins\cards\{cardName}\{cardName}.png
+```
 
 ## JSON template
 Minimum for card to show up  
@@ -35,6 +37,7 @@ Implicit card images is generally used to set more then one card with the same i
 
 To explicitly set a card image, place the image with the same name as the json file in the same folder.
 Example:
+```
 	BepInEx\plugins\cards\TestCard\TestCard.json
 	BepInEx\plugins\cards\TestCard\TestCard.png
-	
+```
