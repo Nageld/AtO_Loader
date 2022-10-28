@@ -11,4 +11,5 @@ public class SubClassDataWrapperBase : SubClassData
     public string trait1BCard;
     public string trait3ACard;
     public string trait3BCard;
+    public string startingItem;
 }

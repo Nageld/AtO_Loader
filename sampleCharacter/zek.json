@@ -8,5 +8,6 @@
     "trait3ACard": "blizzard",
     "resistMind": 75,
     "energy": 7,
-    "energyTurn": 5
+    "energyTurn": 5,
+    "startingItem": "powercoil"
 }

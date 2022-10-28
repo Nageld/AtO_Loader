@@ -27,6 +27,7 @@ public partial class Plugin : BaseUnityPlugin
         harmony.PatchAll(typeof(SetScore));
         harmony.PatchAll(typeof(SetWeeklyScore));
         harmony.PatchAll(typeof(SetObeliskScore));
+        harmony.PatchAll(typeof(SetInitialItems));
         harmony.PatchAll(typeof(Start));
         harmony.PatchAll(typeof(GameVersionToNumber));
     }

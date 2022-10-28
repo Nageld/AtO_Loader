@@ -111,6 +111,18 @@ public class CreateCardClonesPostfix
                         ____SubClass[newCharacter.SubClassName].Trait3B.TraitCard = Globals.Instance.GetCardData(newCharacter.trait3BCard); 
                     }
                 }
+                if (newCharacter.startingItem != null)
+                {
+                    if (Globals.Instance.GetCardData(newCharacter.startingItem) == null)
+                    {
+                        Plugin.Logger.LogInfo($"Invalid starting item for {newCharacter.SubClassName} of item {newCharacter.startingItem}");
+                    }
+                    else
+                    {
+                        Plugin.Logger.LogInfo($"Set starting item for {newCharacter.SubClassName} to {newCharacter.startingItem}");
+                        ____SubClass[newCharacter.SubClassName].Item = Globals.Instance.GetCardData(newCharacter.startingItem);
+                    }
+                }
             }
             catch (Exception ex)
             {
