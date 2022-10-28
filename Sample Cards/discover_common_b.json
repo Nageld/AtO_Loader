@@ -1,9 +1,7 @@
 {
-  "id": "discovercommon",
   "cardName": "The Encyclopedia",
   "baseCard": "discovercommon",
   "cardUpgraded": 2,
-  "upgradedFrom": "discovercommon",
   "cardRarity": 0,
   "cardType": 0,
   "cardClass": -1,
