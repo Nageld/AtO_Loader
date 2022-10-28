@@ -46,7 +46,7 @@ public class CreateCardClonesPrefix
     /// <param name="____CardsSource">A member in the <see cref="Globals"/> class that holds all base cards.</param>
     /// <param name="___cardsText">A member in the <see cref="Globals"/> that holds all card text.</param>
     [HarmonyPrefix]
-    static void LoadCustomItems(Dictionary<string, CardData> ____CardsSource, ref string ___cardsText)
+    static void LoadCustomCards(Dictionary<string, CardData> ____CardsSource, ref string ___cardsText)
     {
         var cardDirectoryInfo = new DirectoryInfo(CardsDirectoryPath);
         if (!cardDirectoryInfo.Exists)
@@ -88,19 +88,32 @@ public class CreateCardClonesPrefix
             }
         }
 
-        // have to loop again cause of the rare card reference assignment
-        foreach (var cardDataWrapper in ____CardsSource.Values.OfType<CardDataWrapper>())
+        // have to loop again cause of the rare card reference assignment and upgrade string assignment
+        foreach (var upgradedCard in ____CardsSource.Values.OfType<CardDataWrapper>())
         {
-            if (!string.IsNullOrWhiteSpace(cardDataWrapper.UpgradesToC))
+            // ignore base cards
+            if (upgradedCard.CardUpgraded == CardUpgraded.No)
             {
-                if (____CardsSource.TryGetValue(cardDataWrapper.UpgradesToC, out var rareCard))
-                {
-                    cardDataWrapper.UpgradesToRare = rareCard;
-                }
-                else
-                {
-                    Plugin.Logger.LogError($"{nameof(CreateCardClonesPrefix)}: Card '{cardDataWrapper.Id}' has 'upgradeToC' '{cardDataWrapper.UpgradesToC}' from custom cards, which cannot be found.");
-                }
+                continue;
+            }
+
+            if (!____CardsSource.TryGetValue(upgradedCard.BaseCard, out var baseCard))
+            {
+                Plugin.Logger.LogError($"Custom card '{upgradedCard.CardName}' has a baseCard '{upgradedCard.BaseCard}' but the baseCard does not exist, please check spelling or create a baseCard with that Id");
+                continue;
+            }
+
+            switch (upgradedCard.CardUpgraded)
+            {
+                case CardUpgraded.A:
+                    baseCard.UpgradesTo1 = upgradedCard.Id;
+                    break;
+                case CardUpgraded.B:
+                    baseCard.UpgradesTo2 = upgradedCard.Id;
+                    break;
+                case CardUpgraded.Rare:
+                    baseCard.UpgradesToRare = upgradedCard;
+                    break;
             }
         }
     }
@@ -120,42 +133,45 @@ public class CreateCardClonesPrefix
         }
 
         var cardClassString = cardClass.ToString().ToLower();
-
         newCard.CardClass = cardClass;
-        newCard.Id = newCard.Id.AppendNotNullOrWhiteSpace(cardClassString);
+
+        if (newCard.CardUpgraded == CardUpgraded.No)
+        {
+            newCard.Id = newCard.Id.AppendNotNullOrWhiteSpace(cardClassString);
+        }
+
         newCard.BaseCard = newCard.BaseCard.AppendNotNullOrWhiteSpace(cardClassString);
-        newCard.UpgradedFrom = newCard.UpgradedFrom.AppendNotNullOrWhiteSpace(cardClassString);
-        newCard.UpgradesTo1 = newCard.UpgradesTo1.AppendNotNullOrWhiteSpace(cardClassString);
-        newCard.UpgradesTo2 = newCard.UpgradesTo2.AppendNotNullOrWhiteSpace(cardClassString);
-        newCard.UpgradesToC = newCard.UpgradesToC.AppendNotNullOrWhiteSpace(cardClassString);
         return newCard;
     }
 
     /// <summary>
     /// Adds custom card to the games dictionary for processing.
-    /// It also handles upgrade template naming.
     /// </summary>
     /// <param name="cardsSource">A member in the <see cref="Globals"/> class that holds all base cards.</param>
     /// <param name="cardsText">A member in the <see cref="Globals"/> that holds all card text.</param>
     /// <param name="newCard">The new custom card to insert.</param>
     private static void AddCardInternalDictionary(Dictionary<string, CardData> cardsSource, ref string cardsText, CardDataWrapper newCard)
     {
-        Plugin.Logger.LogInfo($"Loading Custom Card: {newCard.CardClass} {newCard.Id}");
+        Plugin.Logger.LogInfo($"Loading Custom Card - Id: {newCard.Id ?? newCard.BaseCard} Class: {newCard.CardClass}  Upgrade: {newCard.CardUpgraded}");
 
-        switch (newCard.CardUpgraded)
+        // if its not the base card setup the id for it
+        if (newCard.CardUpgraded != CardUpgraded.No)
         {
-            case CardUpgraded.No:
-                newCard.UpgradesTo1 = newCard.UpgradesTo1.AppendNotNullOrWhiteSpace("a");
-                newCard.UpgradesTo2 = newCard.UpgradesTo2.AppendNotNullOrWhiteSpace("b");
-                newCard.UpgradesToC = newCard.UpgradesToC.AppendNotNullOrWhiteSpace("rare");
-                break;
-            case CardUpgraded.A:
-            case CardUpgraded.B:
-            case CardUpgraded.Rare:
-                newCard.Id = newCard.Id.AppendNotNullOrWhiteSpace(cardUpgradeAppendString[newCard.CardUpgraded]);
-                break;
+            if (string.IsNullOrWhiteSpace(newCard.BaseCard))
+            {
+                Plugin.Logger.LogError($"Custom card '{newCard.CardName}' is upgrade type '{newCard.CardUpgraded}', but is missing 'baseCard' field in json.");
+                return;
+            }
+            
+            newCard.Id = newCard.BaseCard.AppendNotNullOrWhiteSpace(cardUpgradeAppendString[newCard.CardUpgraded]);
+            newCard.UpgradedFrom = newCard.BaseCard;
+        }
+        else
+        {
+            newCard.BaseCard = newCard.Id;
         }
 
+        // assign item reference via static dictionary lookup (could technically just grab the instance reference instead)
         if (!string.IsNullOrWhiteSpace(newCard.itemId))
         {
             if (CreateGameContent.CustomItems.TryGetValue(newCard.itemId, out var item))
@@ -204,20 +220,24 @@ public class CreateCardClonesPrefix
         var newCard = ScriptableObject.CreateInstance<CardDataWrapper>();
         JsonUtility.FromJsonOverwrite(json, newCard);
         newCard.LoadSprite(cardFileInfo);
-        if (string.IsNullOrWhiteSpace(newCard.Id))
+
+        if (newCard.CardUpgraded == CardUpgraded.No)
         {
-            newCard.Id = Guid.NewGuid().ToString().ToLower();
-            Plugin.Logger.LogWarning($"Card: '{newCard.CardName}' is missing the required field 'id'. Path: {cardFileInfo.FullName}");
-            newCard.CardName = "Missing ID";
-        }
-        else if (RegexUtils.HasInvalidIdRegex.IsMatch(newCard.Id))
-        {
-            Plugin.Logger.LogError($"Card: '{newCard.CardName} has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
-            return null;
-        }
-        else
-        {
-            newCard.Id = newCard.Id.ToLower();
+            if (string.IsNullOrWhiteSpace(newCard.Id))
+            {
+                newCard.Id = Guid.NewGuid().ToString().ToLower();
+                Plugin.Logger.LogWarning($"Card: '{newCard.CardName}' is missing the required field 'id'. Path: {cardFileInfo.FullName}");
+                newCard.CardName = "Missing ID";
+            }
+            else if (RegexUtils.HasInvalidIdRegex.IsMatch(newCard.Id))
+            {
+                Plugin.Logger.LogError($"Card: '{newCard.CardName} has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
+                return null;
+            }
+            else
+            {
+                newCard.Id = newCard.Id.ToLower();
+            }
         }
 
         return newCard;

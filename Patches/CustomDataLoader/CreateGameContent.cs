@@ -36,31 +36,31 @@ public class CreateGameContent
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogError($"{nameof(CreateCardClonesPrefix)}: Failed to parse card data from json '{itemFileInfo.FullName}'");
+                Plugin.Logger.LogError($"Failed to parse Item data from json '{itemFileInfo.FullName}'");
                 Plugin.Logger.LogError(ex);
             }
         }
     }
 
-    private static void AddItemInternalDictionary(Dictionary<string, ItemData> itemSource, ItemDataWrapper newCard)
+    private static void AddItemInternalDictionary(Dictionary<string, ItemData> itemSource, ItemDataWrapper newItem)
     {
-        Plugin.Logger.LogInfo($"Loading Custom Item: {newCard.name} {newCard.Id}");
+        Plugin.Logger.LogInfo($"Loading Custom Item: {newItem.name} {newItem.Id}");
 
 
-        newCard.Id = newCard.Id.ToLower();
-        itemSource[newCard.Id] = newCard;
-        CustomItems[newCard.Id] = newCard;
+        newItem.Id = newItem.Id.ToLower();
+        itemSource[newItem.Id] = newItem;
+        CustomItems[newItem.Id] = newItem;
     }
 
-    private static ItemDataWrapper LoadItemFromDisk(FileInfo cardFileInfo)
+    private static ItemDataWrapper LoadItemFromDisk(FileInfo itemFileInfo)
     {
-        var json = File.ReadAllText(cardFileInfo.FullName);
+        var json = File.ReadAllText(itemFileInfo.FullName);
         var newItem = ScriptableObject.CreateInstance<ItemDataWrapper>();
         JsonUtility.FromJsonOverwrite(json, newItem);
         if (string.IsNullOrWhiteSpace(newItem.Id))
         {
             newItem.Id = Guid.NewGuid().ToString().ToLower();
-            Plugin.Logger.LogWarning($"Item: '{newItem.Id}' is missing the required field 'id'. Path: {cardFileInfo.FullName}");
+            Plugin.Logger.LogWarning($"Item: '{newItem.Id}' is missing the required field 'id'. Path: {itemFileInfo.FullName}");
             return null;
         }
         else if (RegexUtils.HasInvalidIdRegex.IsMatch(newItem.Id))

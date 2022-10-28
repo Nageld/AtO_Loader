@@ -1,10 +1,6 @@
 {
   "id": "discovercommon",
   "cardName": "The Encyclopedia",
-  "baseCard": "discovercommon",
-  "upgradesTo1": "discovercommon",
-  "upgradesTo2": "discovercommon",
-  "upgradesToC": "discovercommon",
   "cardRarity": 0,
   "cardType": 0,
   "cardClass": -1,
