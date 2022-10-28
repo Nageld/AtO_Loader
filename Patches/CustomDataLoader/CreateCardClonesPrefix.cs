@@ -221,6 +221,7 @@ public class CreateCardClonesPrefix
         JsonUtility.FromJsonOverwrite(json, newCard);
         newCard.LoadSprite(cardFileInfo);
 
+        // validate base cards
         if (newCard.CardUpgraded == CardUpgraded.No)
         {
             if (string.IsNullOrWhiteSpace(newCard.Id))
@@ -231,7 +232,7 @@ public class CreateCardClonesPrefix
             }
             else if (RegexUtils.HasInvalidIdRegex.IsMatch(newCard.Id))
             {
-                Plugin.Logger.LogError($"Card: '{newCard.CardName} has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
+                Plugin.Logger.LogError($"Card: '{newCard.CardName}' has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
                 return null;
             }
             else
@@ -239,7 +240,15 @@ public class CreateCardClonesPrefix
                 newCard.Id = newCard.Id.ToLower();
             }
         }
-
+        // validate upgraded cards
+        else 
+        {
+            if (string.IsNullOrWhiteSpace(newCard.BaseCard))
+            {
+                Plugin.Logger.LogError($"Upgraded Card: '{newCard.CardName}' '{newCard.CardUpgraded}' is missing the required json field 'baseCard'.");
+                return null;
+            }
+        }
         return newCard;
     }
 }
