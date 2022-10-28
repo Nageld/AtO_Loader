@@ -18,7 +18,7 @@ public partial class Plugin : BaseUnityPlugin
     private void Awake()
     {
         Plugin.Logger = base.Logger;
-        harmony.PatchAll(typeof(CreateCardClones));
+        harmony.PatchAll(typeof(CreateCardClonesPrefix));
         harmony.PatchAll(typeof(CreateCardClonesPostfix));
         harmony.PatchAll(typeof(CreateGameContent));
         harmony.PatchAll(typeof(IsCardUnlocked));

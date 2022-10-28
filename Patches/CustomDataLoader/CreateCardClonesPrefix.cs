@@ -10,7 +10,7 @@ using static Enums;
 namespace AtO_Loader.Patches.CustomDataLoader;
 
 [HarmonyPatch(typeof(Globals), "CreateCardClones")]
-public class CreateCardClones
+public class CreateCardClonesPrefix
 {
     private const string CardsDirectoryPath = @"BepInEx\plugins\cards\";
 
@@ -36,9 +36,9 @@ public class CreateCardClones
     };
 
     /// <summary>
-    /// Dictionary of all custom card ids.
+    /// Dictionary of all custom card datas.
     /// </summary>
-    public static Dictionary<CardClass, List<string>> CustomCards = new();
+    public static Dictionary<CardClass, List<CardDataWrapper>> CustomCards = new();
 
     /// <summary>
     /// Loads all custom cards from <see cref="CardsDirectoryPath"/>.
@@ -83,7 +83,7 @@ public class CreateCardClones
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogError($"{nameof(CreateCardClones)}: Failed to parse card data from json '{cardFileInfo.FullName}'");
+                Plugin.Logger.LogError($"{nameof(CreateCardClonesPrefix)}: Failed to parse card data from json '{cardFileInfo.FullName}'");
                 Plugin.Logger.LogError(ex);
             }
         }
@@ -99,7 +99,7 @@ public class CreateCardClones
                 }
                 else
                 {
-                    Plugin.Logger.LogError($"{nameof(CreateCardClones)}: Card '{cardDataWrapper.Id}' has 'upgradeToC' '{cardDataWrapper.UpgradesToC}' from custom cards, which cannot be found.");
+                    Plugin.Logger.LogError($"{nameof(CreateCardClonesPrefix)}: Card '{cardDataWrapper.Id}' has 'upgradeToC' '{cardDataWrapper.UpgradesToC}' from custom cards, which cannot be found.");
                 }
             }
         }
@@ -156,6 +156,19 @@ public class CreateCardClones
                 break;
         }
 
+        if (!string.IsNullOrWhiteSpace(newCard.itemId))
+        {
+            if (CreateGameContent.CustomItems.TryGetValue(newCard.itemId, out var item))
+            {
+                newCard.Item = item;
+            }
+            else
+            {
+                Plugin.Logger.LogError($"Could not find custom item '{newCard.itemId}' associated with this custom card '{newCard.Id}'");
+                return;
+            }
+        }
+
         newCard.Id = newCard.Id.ToLower();
 
         if (!cardsSource.ContainsKey(newCard.Id))
@@ -174,10 +187,10 @@ public class CreateCardClones
 
         if (!CustomCards.ContainsKey(newCard.CardClass))
         {
-            CustomCards[newCard.CardClass] = new List<string>();
+            CustomCards[newCard.CardClass] = new List<CardDataWrapper>();
         }
 
-        CustomCards[newCard.CardClass].Add(newCard.Id);
+        CustomCards[newCard.CardClass].Add(newCard);
     }
 
     /// <summary>

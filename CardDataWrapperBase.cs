@@ -4,6 +4,7 @@
     {
         // these must be fields and camel case is for consistency - blame JsonUtility
         public string imageFileName;
+        public string itemId;
         private string upgradesToC;
 
         public string UpgradesToC
