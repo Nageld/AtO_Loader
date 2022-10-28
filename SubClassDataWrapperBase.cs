@@ -7,4 +7,8 @@ public class SubClassDataWrapperBase : SubClassData
     }  
     public int[] cardCounts;
     public string[] cardIds;
+    public string trait1ACard;
+    public string trait1BCard;
+    public string trait3ACard;
+    public string trait3BCard;
 }
