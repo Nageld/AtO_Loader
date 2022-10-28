@@ -142,6 +142,7 @@ public class CreateCardClonesPostfix
             Plugin.Logger.LogWarning($"Class is missing the required field 'SubClassName'. Path: {cardFileInfo.FullName}");
             return null;
         }
+        newCharacter.SubClassName = newCharacter.SubClassName.ToLower();
         if (!classes.Keys.Contains(newCharacter.SubClassName))
         {
             Plugin.Logger.LogError($"Class: '{newCharacter.SubClassName}' has an invalid SubClassName. SubClassName should refer to existing classes");
