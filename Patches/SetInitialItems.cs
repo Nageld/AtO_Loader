@@ -13,13 +13,15 @@ public class SetInitialItems
             return;
         }
 
-        if (_cardData.Item != null)
+        if (_cardData.Item == null)
         {
-            string text = _cardData.Id;
-            if (Globals.Instance.GetCardData(text, false).UpgradesTo1 == "")
-            {
-                _rankLevel = 3;
-            }
+            return;
         }
-    }   
+
+        string text = _cardData.Id;
+        if (Globals.Instance.GetCardData(text, false).UpgradesTo1 == string.Empty)
+        {
+            _rankLevel = 3;
+        }
+    }
 }
