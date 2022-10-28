@@ -156,13 +156,7 @@ public class CreateCardClonesPrefix
 
         // if its not the base card setup the id for it
         if (newCard.CardUpgraded != CardUpgraded.No)
-        {
-            if (string.IsNullOrWhiteSpace(newCard.BaseCard))
-            {
-                Plugin.Logger.LogError($"Custom card '{newCard.CardName}' is upgrade type '{newCard.CardUpgraded}', but is missing 'baseCard' field in json.");
-                return;
-            }
-            
+        {            
             newCard.Id = newCard.BaseCard.AppendNotNullOrWhiteSpace(cardUpgradeAppendString[newCard.CardUpgraded]);
             newCard.UpgradedFrom = newCard.BaseCard;
         }
@@ -245,7 +239,7 @@ public class CreateCardClonesPrefix
         {
             if (string.IsNullOrWhiteSpace(newCard.BaseCard))
             {
-                Plugin.Logger.LogError($"Upgraded Card: '{newCard.CardName}' '{newCard.CardUpgraded}' is missing the required json field 'baseCard'.");
+                Plugin.Logger.LogError($"Custom card '{newCard.CardName}' is upgrade type '{newCard.CardUpgraded}', but is missing 'baseCard' field in json.");
                 return null;
             }
         }
