@@ -168,6 +168,7 @@ public class CreateCardClonesPrefix
         // assign item reference via static dictionary lookup (could technically just grab the instance reference instead)
         if (!string.IsNullOrWhiteSpace(newCard.itemId))
         {
+            newCard.itemId = newCard.itemId.ToLower();
             if (CreateGameContent.CustomItems.TryGetValue(newCard.itemId, out var item))
             {
                 newCard.Item = item;
