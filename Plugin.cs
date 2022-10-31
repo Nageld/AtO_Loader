@@ -20,15 +20,13 @@ public partial class Plugin : BaseUnityPlugin
         Plugin.Logger = base.Logger;
         harmony.PatchAll(typeof(CreateCardClonesPrefix));
         harmony.PatchAll(typeof(CreateCardClonesPostfix));
-        harmony.PatchAll(typeof(CreateGameContent));
+        harmony.PatchAll(typeof(CreateGameContentPostfix));
         harmony.PatchAll(typeof(IsCardUnlocked));
         harmony.PatchAll(typeof(GetKeyNotesData));
         harmony.PatchAll(typeof(LoadPlayerData));
         harmony.PatchAll(typeof(SetScore));
         harmony.PatchAll(typeof(SetWeeklyScore));
         harmony.PatchAll(typeof(SetObeliskScore));
-        harmony.PatchAll(typeof(SetInitialItems));
-        harmony.PatchAll(typeof(Init));
         harmony.PatchAll(typeof(Start));
         harmony.PatchAll(typeof(GameVersionToNumber));
     }

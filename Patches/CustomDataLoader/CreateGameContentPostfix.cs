@@ -8,9 +8,13 @@ using UnityEngine;
 namespace AtO_Loader.Patches.CustomDataLoader;
 
 [HarmonyPatch(typeof(Globals), "CreateGameContent")]
-public class CreateGameContent
+public class CreateGameContentPostfix
 {
     private const string ItemDirectoryPath = @"BepInEx\plugins\items\";
+
+    /// <summary>
+    /// Dictionary of all custom items.
+    /// </summary>
     public static Dictionary<string, ItemDataWrapper> CustomItems = new();
 
     [HarmonyPostfix]
@@ -32,11 +36,22 @@ public class CreateGameContent
                     continue;
                 }
 
+                // assign item reference via static dictionary lookup (could technically just grab the instance reference instead)
+                if (CreateCardClonesPrefix.CustomItemCards.TryGetValue(newItem.Id, out var itemCard))
+                {
+                    itemCard.Item = newItem;
+                }
+                else
+                {
+                    Plugin.Logger.LogError($"[{nameof(CreateGameContentPostfix)}] Could not find card for custom item '{newItem.Id}'");
+                    return;
+                }
+
                 AddItemInternalDictionary(____ItemDataSource, newItem);
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogError($"Failed to parse Item data from json '{itemFileInfo.FullName}'");
+                Plugin.Logger.LogError($"[{nameof(CreateGameContentPostfix)}] Failed to parse Item data from json '{itemFileInfo.FullName}'");
                 Plugin.Logger.LogError(ex);
             }
         }
@@ -44,7 +59,7 @@ public class CreateGameContent
 
     private static void AddItemInternalDictionary(Dictionary<string, ItemData> itemSource, ItemDataWrapper newItem)
     {
-        Plugin.Logger.LogInfo($"Loading Custom Item: {newItem.name} {newItem.Id}");
+        Plugin.Logger.LogInfo($"[{nameof(CreateGameContentPostfix)}] Loading Custom Item: {newItem.name} {newItem.Id}");
 
 
         newItem.Id = newItem.Id.ToLower();
@@ -60,12 +75,12 @@ public class CreateGameContent
         if (string.IsNullOrWhiteSpace(newItem.Id))
         {
             newItem.Id = Guid.NewGuid().ToString().ToLower();
-            Plugin.Logger.LogWarning($"Item: '{newItem.Id}' is missing the required field 'id'. Path: {itemFileInfo.FullName}");
+            Plugin.Logger.LogWarning($"[{nameof(CreateGameContentPostfix)}] Item: '{newItem.Id}' is missing the required field 'id'. Path: {itemFileInfo.FullName}");
             return null;
         }
         else if (RegexUtils.HasInvalidIdRegex.IsMatch(newItem.Id))
         {
-            Plugin.Logger.LogError($"Item: '{newItem.Id} has an invalid Id: {newItem.Id}, ids should only consist of letters and numbers.");
+            Plugin.Logger.LogError($"[{nameof(CreateGameContentPostfix)}] Item: '{newItem.Id} has an invalid Id: {newItem.Id}, ids should only consist of letters and numbers.");
             return null;
         }
         else

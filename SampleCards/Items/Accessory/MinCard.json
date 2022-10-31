@@ -1,5 +1,8 @@
 {
   "cardName": "MinItemCard",
   "id": "MinItemCard",
-  "itemId": "MinItem"
+  "itemId": "MinItem",
+  "showInTome": true,
+  "cardClass": 8,
+  "cardType": 25
 }
