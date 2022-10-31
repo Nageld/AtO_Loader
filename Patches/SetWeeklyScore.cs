@@ -6,7 +6,7 @@ namespace AtO_Loader.Patches;
 public class SetWeeklyScore
 {
     [HarmonyPrefix]
-    static bool SetPatch()
+    public static bool SetPatch()
     {
         return false;
     }

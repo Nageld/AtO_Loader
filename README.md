@@ -19,7 +19,6 @@ Minimum for card to show up
 {
 	"cardName": "SampleCard",
 	"id": "SampleCard",
-	"showInTome": true
 }
 ```
 ## JSON tags explained
@@ -41,3 +40,10 @@ Example:
 	BepInEx\plugins\cards\TestCard\TestCard.json
 	BepInEx\plugins\cards\TestCard\TestCard.png
 ```
+## Character Ids:
+|Column 1|Column 2 | Column 3 | Column 4 | 
+|--|--|--|--|
+|mercenary|sentinel|berserker|warden| 
+|ranger|assassin|archer|minstrel| 
+|elementalist|pyromancer|loremaster|warlock| 
+|cleric|priest|voodoowitch|prophet| 

@@ -9,5 +9,5 @@ public class SetObeliskScore
     static bool SetPatch()
     {
         return false;
-    }   
+    }
 }

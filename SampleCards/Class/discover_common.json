@@ -1,0 +1,20 @@
+{
+  "id": "discovercommon",
+  "cardName": "The Encyclopedia",
+  "cardRarity": 0,
+  "cardType": 0,
+  "cardClass": -1,
+  "energyCost": 0,
+  "playable": true,
+  "targetSide": 3,
+  "effectRepeat": 1,
+  "addCard": 1,
+  "addCardChoose": 0,
+  "addCardFrom": 2,
+  "addCardPlace": 5,
+  "addCardReducedCost": 0,
+  "addCardVanish": false,
+  "vanish": true,
+  "autoplayDraw": false,
+  "imageFileName": "TheEncyclopedia.png"
+}

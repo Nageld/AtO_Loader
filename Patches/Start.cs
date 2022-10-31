@@ -3,7 +3,7 @@
 namespace AtO_Loader.Patches;
 
 [HarmonyPatch(typeof(GameManager), "Start")]
-public class Start   
+public class Start
 {
     [HarmonyPostfix]
     static void SetPatch(ref string ___gameVersion)

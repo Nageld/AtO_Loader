@@ -6,7 +6,7 @@ namespace AtO_Loader.Patches;
 public class GameVersionToNumber
 {
     [HarmonyPrefix]
-    static void SetPatch(ref string _str)
+    public static void SetPatch(ref string _str)
     {
         if (_str.Substring(0, 1).Equals("m"))
         {

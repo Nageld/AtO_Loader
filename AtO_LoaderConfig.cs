@@ -2,6 +2,5 @@
 {
     public class AtO_LoaderConfig
     {
-        public bool OnlyCustomCardsAsReward { get; set; }
     }
 }
