@@ -13,23 +13,21 @@ public partial class Plugin : BaseUnityPlugin
     private const string modName = "AtO_Loader";
     private const string ModVersion = "0.0.0.1";
     private readonly Harmony harmony = new(modGUID);
-    internal static new ManualLogSource Logger;
+
+    internal static new ManualLogSource Logger { get; set; }
 
     private void Awake()
     {
         Plugin.Logger = base.Logger;
-        harmony.PatchAll(typeof(CreateCardClonesPrefix));
-        harmony.PatchAll(typeof(CreateCardClonesPostfix));
-        harmony.PatchAll(typeof(CreateGameContent));
-        harmony.PatchAll(typeof(IsCardUnlocked));
-        harmony.PatchAll(typeof(GetKeyNotesData));
-        harmony.PatchAll(typeof(LoadPlayerData));
-        harmony.PatchAll(typeof(SetScore));
-        harmony.PatchAll(typeof(SetWeeklyScore));
-        harmony.PatchAll(typeof(SetObeliskScore));
-        harmony.PatchAll(typeof(SetInitialItems));
-        harmony.PatchAll(typeof(Init));
-        harmony.PatchAll(typeof(Start));
-        harmony.PatchAll(typeof(GameVersionToNumber));
+        this.harmony.PatchAll(typeof(CreateCardClonesPrefix));
+        this.harmony.PatchAll(typeof(CreateCardClonesPostfix));
+        this.harmony.PatchAll(typeof(IsCardUnlocked));
+        this.harmony.PatchAll(typeof(GetKeyNotesData));
+        this.harmony.PatchAll(typeof(LoadPlayerData));
+        this.harmony.PatchAll(typeof(SetScore));
+        this.harmony.PatchAll(typeof(SetWeeklyScore));
+        this.harmony.PatchAll(typeof(SetObeliskScore));
+        this.harmony.PatchAll(typeof(Start));
+        this.harmony.PatchAll(typeof(GameVersionToNumber));
     }
 }

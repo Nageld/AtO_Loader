@@ -1,7 +1,7 @@
 {
   "cardName": "The Encyclopedia",
   "baseCard": "discovercommon",
-  "cardUpgraded": 2,
+  "cardUpgraded": 3,
   "cardRarity": 0,
   "cardType": 0,
   "cardClass": -1,
@@ -10,13 +10,13 @@
   "targetSide": 3,
   "effectRepeat": 1,
   "addCard": 1,
-  "addCardChoose": 2,
+  "addCardChoose": 6,
   "addCardFrom": 2,
   "addCardPlace": 5,
   "addCardReducedCost": 0,
-  "addCardVanish": false,
-  "showInTome": true,
-  "vanish": true,
+  "addCardVanish": true,
+  "vanish": false,
   "autoplayDraw": false,
+  "innate": true,
   "imageFileName": "TheEncyclopedia.png"
 }
