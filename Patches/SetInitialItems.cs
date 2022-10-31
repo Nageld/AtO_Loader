@@ -6,7 +6,7 @@ namespace AtO_Loader.Patches;
 public class SetInitialItems
 {
     [HarmonyPrefix]
-    static void SetPatch(CardData _cardData,ref int _rankLevel)
+    public static void SetPatch(CardData _cardData,ref int _rankLevel)
     {
         if (_cardData == null)
         {

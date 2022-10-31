@@ -6,7 +6,7 @@ namespace AtO_Loader.Patches;
 public class LoadPlayerData
 {
     [HarmonyPrefix]
-    static void SetPatch(ref string ___saveGameExtension, ref string ___saveGameExtensionBK)
+    public static void SetPatch(ref string ___saveGameExtension, ref string ___saveGameExtensionBK)
     {
         ___saveGameExtension = ".mato";
         ___saveGameExtensionBK = ".mbak";

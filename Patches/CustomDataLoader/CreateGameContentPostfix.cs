@@ -10,15 +10,15 @@ namespace AtO_Loader.Patches.CustomDataLoader;
 [HarmonyPatch(typeof(Globals), "CreateGameContent")]
 public class CreateGameContentPostfix
 {
+    /// <summary>
+    /// Gets or sets dictionary of all custom items.
+    /// </summary>
+    public static Dictionary<string, ItemDataWrapper> CustomItems { get; set; } = new Dictionary<string, ItemDataWrapper>();
+
     private const string ItemDirectoryPath = @"BepInEx\plugins\items\";
 
-    /// <summary>
-    /// Dictionary of all custom items.
-    /// </summary>
-    public static Dictionary<string, ItemDataWrapper> CustomItems = new();
-
     [HarmonyPostfix]
-    static void LoadCustomItems(Dictionary<string, ItemData> ____ItemDataSource)
+    public static void LoadCustomItems(Dictionary<string, ItemData> ____ItemDataSource)
     {
         var itemDirectoryInfo = new DirectoryInfo(ItemDirectoryPath);
         if (!itemDirectoryInfo.Exists)
@@ -44,7 +44,7 @@ public class CreateGameContentPostfix
                 else
                 {
                     Plugin.Logger.LogError($"[{nameof(CreateGameContentPostfix)}] Could not find card for custom item '{newItem.Id}'");
-                    return;
+                    continue;
                 }
 
                 AddItemInternalDictionary(____ItemDataSource, newItem);
@@ -60,7 +60,6 @@ public class CreateGameContentPostfix
     private static void AddItemInternalDictionary(Dictionary<string, ItemData> itemSource, ItemDataWrapper newItem)
     {
         Plugin.Logger.LogInfo($"[{nameof(CreateGameContentPostfix)}] Loading Custom Item: {newItem.name} {newItem.Id}");
-
 
         newItem.Id = newItem.Id.ToLower();
         itemSource[newItem.Id] = newItem;

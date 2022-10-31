@@ -14,7 +14,7 @@ public class CreateCardClonesPostfix
     private static Dictionary<string, SubClassData> classes = new();
 
     [HarmonyPostfix]
-    static void LoadCharacterData(Dictionary<string, SubClassData> ____SubClass)
+    public static void LoadCharacterData(Dictionary<string, SubClassData> ____SubClass)
     {
         classes = ____SubClass;
         var itemDirectoryInfo = new DirectoryInfo(ItemDirectoryPath);
