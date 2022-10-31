@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using AtO_Loader.Utils;
+﻿using System.Collections.Generic;
 using HarmonyLib;
-using UnityEngine;
 
 namespace AtO_Loader.Patches.CustomDataLoader;
 
