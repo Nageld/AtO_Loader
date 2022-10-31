@@ -331,6 +331,8 @@ public class CreateCardClonesPrefix
                 Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an {nameof(newCard.itemId)}: {newCard.itemId} defined but cannot be found.");
                 return null;
             }
+
+            newCard.Playable = false;
         }
         else if (newCard.CardUpgraded != CardUpgraded.No)
         {

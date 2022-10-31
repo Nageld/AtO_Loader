@@ -15,7 +15,6 @@
   "addCardPlace": 5,
   "addCardReducedCost": 0,
   "addCardVanish": false,
-  "showInTome": true,
   "vanish": true,
   "autoplayDraw": false,
   "imageFileName": "TheEncyclopedia.png"

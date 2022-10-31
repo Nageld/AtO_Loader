@@ -15,7 +15,6 @@
   "addCardPlace": 5,
   "addCardReducedCost": 0,
   "addCardVanish": true,
-  "showInTome": true,
   "vanish": false,
   "autoplayDraw": false,
   "innate": true,
