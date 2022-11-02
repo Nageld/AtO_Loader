@@ -225,7 +225,7 @@
     },
     "cardClass": {
       "type": "number",
-      "description": "0:Warrior\n1:Mage\n2:Healer\n3:Scout\n4:MagicKnight\n5:Monster\n6:Injury\n7:Boon\n8:Item\n9:Special\n10:Enchantment\n11:None",
+      "description": "-1:All\n0:Warrior\n1:Mage\n2:Healer\n3:Scout\n4:MagicKnight\n5:Monster\n6:Injury\n7:Boon\n8:Item\n9:Special\n10:Enchantment\n11:None",
       "enum": [
         0,
         1,
@@ -383,11 +383,11 @@
     },
     "innate": {
       "type": "boolean",
-      "description": "TODO"
+      "description": "Is the card innate"
     },
     "lazy": {
       "type": "boolean",
-      "description": "TODO"
+      "description": "unimplmented"
     },
     "endTurn": {
       "type": "boolean",
@@ -395,7 +395,7 @@
     },
     "moveToCenter": {
       "type": "boolean",
-      "description": "TODO"
+      "description": "Moves the caster to the center of the screen "
     },
     "corrupted": {
       "type": "boolean",
