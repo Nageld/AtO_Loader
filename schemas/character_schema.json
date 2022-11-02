@@ -1,0 +1,132 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Custom Card Schema",
+    "description": "Describes a card to generate",
+    "additionalProperties": false,
+    "type": "object",
+    "required": [
+        "subClassName",
+        "$schema"
+    ],
+    "properties": {
+        "$schema": {
+            "type": "string"
+        },
+        "subClassName": {
+            "description": "Character you are modifying",
+            "enum": [
+                "mercenary",
+                "sentinel",
+                "berserker",
+                "warden",
+                "ranger",
+                "assassin",
+                "archer",
+                "minstrel",
+                "elementalist",
+                "pyromancer",
+                "loremaster",
+                "warlock",
+                "cleric",
+                "priest",
+                "voodoowitch",
+                "prophet"
+            ]
+        },
+        "cardIds": {
+            "type": "array",
+            "description": "Ids of cards in starting deck",
+            "items": [
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "cardCounts": {
+            "type": "array",
+            "description": "Counts of cards in starting deck",
+            "items": [
+                {
+                    "type": "string"
+                }
+            ]
+        },
+        "trait1ACard": {
+            "type": "string",
+            "description": "Level 1 left card option",
+            "minLength": 1
+        },
+        "trait1BCard": {
+            "type": "string",
+            "description": "Level 1 right card option",
+            "minLength": 1
+        },
+        "trait3ACard": {
+            "type": "string",
+            "description": "Level 3 left card option",
+            "minLength": 1
+        },
+        "trait3BCard": {
+            "type": "string",
+            "description": "Level 3 right card option",
+            "minLength": 1
+        },
+        "startingItem": {
+            "type": "string",
+            "description": "Id of the character's starting item",
+            "minLength": 1
+        },
+        "speed": {
+            "type": "integer",
+            "description": "Base speed"
+        },
+        "hp": {
+            "type": "integer",
+            "description": "Base health"
+        },
+        "energy": {
+            "type": "integer",
+            "description": "Base energy"
+        },
+        "energyTurn": {
+            "type": "integer",
+            "description": "Energy regen"
+        },
+        "resistSlashing": {
+            "type": "integer",
+            "description": "Slashing resistance"
+        },
+        "resistBlunt": {
+            "type": "integer",
+            "description": "Blunt resistance"
+        },
+        "resistPiercing": {
+            "type": "integer",
+            "description": "Piercing resistance"
+        },
+        "resistFire": {
+            "type": "integer",
+            "description": "Fire resistance"
+        },
+        "resistCold": {
+            "type": "integer",
+            "description": "Cold resistance"
+        },
+        "resistLightning": {
+            "type": "integer",
+            "description": "Lightning resistance"
+        },
+        "resistMind": {
+            "type": "integer",
+            "description": "Mind resistance"
+        },
+        "resistHoly": {
+            "type": "integer",
+            "description": "Holy resistance"
+        },
+        "resistShadow": {
+            "type": "integer",
+            "description": "Shadow resistance"
+        }
+    }
+}
