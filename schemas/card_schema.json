@@ -192,7 +192,7 @@
     },
     "cardUpgraded": {
       "type": "number",
-      "description": "0:No\n,1:A\n,2:B\n,3:Corrupted\n",
+      "description": "0:No\n1:A\n2:B\n3:Corrupted",
       "enum": [
         0,
         1,
@@ -214,7 +214,7 @@
     },
     "cardRarity": {
       "type": "number",
-      "description": "0:Common\n,1:Uncommon\n,2:Rare\n,3:Epic,4:Mythic\n",
+      "description": "0:Common\n1:Uncommon\n2:Rare\n3:Epic\n4:Mythic",
       "enum": [
         0,
         1,
@@ -225,7 +225,7 @@
     },
     "cardClass": {
       "type": "number",
-      "description": "0:Warrior1:Mage\n2:Healer\n3:Scout\n4:MagicKnight\n5:Monster\n6:Injury\n7:Boon\n8:Item\n9:Special\n10:Enchantment\n11:None",
+      "description": "0:Warrior\n1:Mage\n2:Healer\n3:Scout\n4:MagicKnight\n5:Monster\n6:Injury\n7:Boon\n8:Item\n9:Special\n10:Enchantment\n11:None",
       "enum": [
         0,
         1,
@@ -248,7 +248,7 @@
     },
     "targetSide": {
       "type": "number",
-      "description": "0:Enemy\n,1:Friend\n,2:Anyone\n,3:Self,4:Ally\n",
+      "description": "0:Enemy\n1:Friend\n2:Anyone\n3:Self,4:Ally\n",
       "enum": [
         0,
         1,
@@ -271,7 +271,7 @@
     },
     "addCardFrom": {
       "type": "number",
-      "description": "0:Deck\n,1:Discard\n,2:Game\n,3:Hand,4:Vanish\n",
+      "description": "0:Deck\n1:Discard\n2:Game\n3:Hand\n4:Vanish",
       "enum": [
         0,
         1,
@@ -282,7 +282,7 @@
     },
     "addCardPlace": {
       "type": "number",
-      "description": "0:Discard\n,1:TopDeck\n,2:BottomDeck\n,3:RandomDeck,4:Vanish\n,5:Hand\n,6:Cast\n",
+      "description": "0:Discard\n1:TopDeck\n2:BottomDeck\n3:RandomDeck\n4:Vanish\n5:Hand\n6:Cast",
       "enum": [
         0,
         1,
