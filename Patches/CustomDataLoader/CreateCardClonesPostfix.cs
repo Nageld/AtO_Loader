@@ -18,7 +18,6 @@ public class CreateCardClonesPostfix
     public static void LoadCharacterData(Dictionary<string, SubClassData> ____SubClass)
     {
         classes = ____SubClass;
-
         foreach (var characterFileInfo in DirectoryUtils.GetAllPluginSubFoldersByName(CharacterDirectoryName, "*.json"))
         {
             try
