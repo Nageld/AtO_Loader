@@ -1,7 +1,7 @@
 {
     "$schema": "http://json-schema.org/draft-04/schema#",
-    "title": "Custom Card Schema",
-    "description": "Describes a card to generate",
+    "title": "Custom Character Schema",
+    "description": "Describes a character to modify",
     "additionalProperties": false,
     "type": "object",
     "required": [
