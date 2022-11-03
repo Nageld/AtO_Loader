@@ -1,0 +1,396 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "title": "Custom Item Schema",
+    "description": "Describes a item to generate",
+    "type": "object",
+    "properties": {
+        "dropOnly": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "questItem": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "id": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "cursedItem": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "activation": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "isEnchantment": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "exactRound": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "roundCycle": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "timesPerTurn": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "timesPerCombat": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "auraCurseNumForOneEvent": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "castedCardType": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "emptyHand": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "usedEnergy": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "lowerOrEqualPercentHP": {
+            "type": "number",
+            "description": "TODO"
+        },
+        "notShowCharacterBonus": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "destroyAfterUse": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "itemTarget": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "drawCards": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "drawMultiplyByEnergyUsed": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "cardNum": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "addToHand": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "cardToGainType": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "cardPlace": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "costZero": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "costReduction": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "vanish": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "permanent": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "duplicateActive": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "passSingleAndCharacterRolls": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "onlyAddItemToNPCs": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "cardsReduced": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "cardToReduceType": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "costReduceReduction": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "costReducePermanent": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "reduceHighestCost": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "maxHealth": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "characterStatModified": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "characterStatModifiedValue": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "characterStatModified2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "characterStatModifiedValue2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "characterStatModified3": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "characterStatModifiedValue3": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "healFlatBonus": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "healPercentBonus": {
+            "type": "number",
+            "description": "TODO"
+        },
+        "healReceivedFlatBonus": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "healReceivedPercentBonus": {
+            "type": "number",
+            "description": "TODO"
+        },
+        "damageFlatBonus": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damageFlatBonusValue": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damageFlatBonus2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damageFlatBonusValue2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damageFlatBonus3": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damageFlatBonusValue3": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damagePercentBonus": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damagePercentBonusValue": {
+            "type": "number",
+            "description": "TODO"
+        },
+        "damagePercentBonus2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damagePercentBonusValue2": {
+            "type": "number",
+            "description": "TODO"
+        },
+        "damagePercentBonus3": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damagePercentBonusValue3": {
+            "type": "number",
+            "description": "TODO"
+        },
+        "healQuantity": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "healPercentQuantity": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "energyQuantity": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "auracurseBonusValue1": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "auracurseBonusValue2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "resistModified1": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "resistModifiedValue1": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "resistModified2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "resistModifiedValue2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "resistModified3": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "resistModifiedValue3": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "auracurseGainValue1": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "acg1MultiplyByEnergyUsed": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "auracurseGainValue2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "acg2MultiplyByEnergyUsed": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "auracurseGainValue3": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "acg3MultiplyByEnergyUsed": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "auracurseGainSelfValue1": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "auracurseGainSelfValue2": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "chanceToDispel": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "chanceToDispelNum": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "percentRetentionEndGame": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "percentDiscountShop": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "useTheNextInsteadWhenYouPlay": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "destroyAfterUses": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "destroyStartOfTurn": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "destroyEndOfTurn": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "castEnchantmentOnFinishSelfCast": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "modifiedDamageType": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "damageToTarget": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "dttMultiplyByEnergyUsed": {
+            "type": "boolean",
+            "description": "TODO"
+        },
+        "damageToTargetType": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "effectItemOwner": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "effectCaster": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "effectTarget": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "auracurseCustomString": {
+            "type": "string",
+            "description": "TODO"
+        },
+        "auracurseCustomModValue1": {
+            "type": "integer",
+            "description": "TODO"
+        },
+        "auracurseCustomModValue2": {
+            "type": "integer",
+            "description": "TODO"
+        }
+    },
+}
