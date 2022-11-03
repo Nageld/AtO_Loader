@@ -82,6 +82,7 @@ public class CreateCardClonesPrefix
             {
                 var newItem = LoadItemFromDisk(itemFileInfo);
                 CustomItems[newItem.Id] = newItem;
+                UpdateItemAuras(ref newItem);
             }
             catch (Exception ex)
             {
@@ -120,6 +121,21 @@ public class CreateCardClonesPrefix
         card.SummonAura3 = Globals.Instance.GetAuraCurseData(card.isummonAura3);
     }
 
+    private static void UpdateItemAuras(ref ItemDataWrapper item)
+        {
+            item.AuraCurseSetted = Globals.Instance.GetAuraCurseData(item.iauraCurseSetted);
+            item.AuracurseBonus1 = Globals.Instance.GetAuraCurseData(item.iauracurseBonus1);
+            item.AuracurseBonus2 = Globals.Instance.GetAuraCurseData(item.iauracurseBonus2);
+            item.AuracurseImmune1 = Globals.Instance.GetAuraCurseData(item.iauracurseImmune1);
+            item.AuracurseGain1 = Globals.Instance.GetAuraCurseData(item.iauracurseGain1);
+            item.AuracurseGain2 = Globals.Instance.GetAuraCurseData(item.iauracurseGain2);
+            item.AuracurseGain3 = Globals.Instance.GetAuraCurseData(item.iauracurseGain3);
+            item.AuracurseGainSelf1 = Globals.Instance.GetAuraCurseData(item.iauracurseGainSelf1);
+            item.AuracurseGainSelf2 = Globals.Instance.GetAuraCurseData(item.iauracurseGainSelf2);
+            item.AuracurseCustomAC = Globals.Instance.GetAuraCurseData(item.iauracurseCustomAC);
+            item.AuracurseImmune2 = Globals.Instance.GetAuraCurseData(item.iauracurseImmune2);
+        }
+
     private static void LoadCustomCards(Dictionary<string, CardData> cardsSource, ref string cardsText)
     {
         foreach (var cardFileInfo in DirectoryUtils.GetAllPluginSubFoldersByName(CardsDirectoryName, "*.json"))
@@ -131,7 +147,7 @@ public class CreateCardClonesPrefix
                 {
                     continue;
                 }
-                
+
                 // not a multi class card
                 if ((int)newCard.CardClass == -1)
                 {
