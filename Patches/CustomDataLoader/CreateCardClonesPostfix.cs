@@ -4,26 +4,21 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AtO_Loader.Utils;
 using HarmonyLib;
 using UnityEngine;
 
 [HarmonyPatch(typeof(Globals), "CreateCardClones")]
 public class CreateCardClonesPostfix
 {
-    private const string ItemDirectoryPath = @"BepInEx\plugins\characters\";
+    private const string CharacterDirectoryName = "characters";
     private static Dictionary<string, SubClassData> classes = new();
 
     [HarmonyPostfix]
     public static void LoadCharacterData(Dictionary<string, SubClassData> ____SubClass)
     {
         classes = ____SubClass;
-        var itemDirectoryInfo = new DirectoryInfo(ItemDirectoryPath);
-        if (!itemDirectoryInfo.Exists)
-        {
-            itemDirectoryInfo.Create();
-        }
-
-        foreach (var characterFileInfo in itemDirectoryInfo.GetFiles("*.json", SearchOption.AllDirectories))
+        foreach (var characterFileInfo in DirectoryUtils.GetAllPluginSubFoldersByName(CharacterDirectoryName, "*.json"))
         {
             try
             {

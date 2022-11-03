@@ -6,12 +6,15 @@ TODO
 TODO
 ## Usage
 
- 1. Make a folder in BepInEx\plugins called `cards`
+ 1. Make a folder in BepInEx\plugins\{PluginName}\
  2. Place files into:
  ```
-	BepInEx\plugins\cards\{cardName}\{cardName}.json
-	BepInEx\plugins\cards\{cardName}\{cardName}.png
+	BepInEx\plugins\{PluginName}\cards\{cardName}.json
+	BepInEx\plugins\{PluginName}\cards\{cardName}.png
+	BepInEx\plugins\{PluginName}\characters\{characterName}.json
+	BepInEx\plugins\{PluginName}\items\{itemName}.json
 ```
+You are allowed to organize the files however you want under those folders if you wish to have subfolders.
 
 ## JSON template
 Minimum for card to show up  
@@ -37,8 +40,8 @@ Implicit card images is generally used to set more then one card with the same i
 To explicitly set a card image, place the image with the same name as the json file in the same folder.
 Example:
 ```
-	BepInEx\plugins\cards\TestCard\TestCard.json
-	BepInEx\plugins\cards\TestCard\TestCard.png
+	BepInEx\plugins\{PluginName}\cards\TestCard.json
+	BepInEx\plugins\{PluginName}\cards\TestCard.png
 ```
 ## Character Ids:
 |Column 1|Column 2 | Column 3 | Column 4 | 
