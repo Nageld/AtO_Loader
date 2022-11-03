@@ -6,14 +6,21 @@ using HarmonyLib;
 
 namespace AtO_Loader;
 
-[BepInPlugin(modGUID, modName, ModVersion)]
+[BepInPlugin(ModGUID, ModName, ModVersion)]
 public partial class Plugin : BaseUnityPlugin
 {
-    private const string modGUID = "Book.CardLoader";
-    private const string modName = "AtO_Loader";
+    /// <summary>
+    /// Base plugin directory.
+    /// </summary>
+    public const string BasePluginDirectory = "BepInEx\\plugins";
+    private const string ModGUID = "Book.CardLoader";
+    private const string ModName = "AtO_Loader";
     private const string ModVersion = "0.0.0.1";
-    private readonly Harmony harmony = new(modGUID);
+    private readonly Harmony harmony = new(ModGUID);
 
+    /// <summary>
+    /// Gets or sets harmony Logger instance.
+    /// </summary>
     internal static new ManualLogSource Logger { get; set; }
 
     private void Awake()

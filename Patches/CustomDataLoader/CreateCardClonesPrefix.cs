@@ -12,8 +12,8 @@ namespace AtO_Loader.Patches.CustomDataLoader;
 [HarmonyPatch(typeof(Globals), "CreateCardClones")]
 public class CreateCardClonesPrefix
 {
-    private const string CardsDirectoryPath = @"BepInEx\plugins\cards\";
-    private const string ItemDirectoryPath = @"BepInEx\plugins\items\";
+    private const string CardsDirectoryName = @"cards";
+    private const string ItemsDirectoryName = @"items";
 
     /// <summary>
     /// Hardcoded dictionary for appending id's with, due to game using these templates names to find cards.
@@ -60,7 +60,7 @@ public class CreateCardClonesPrefix
     public static Dictionary<string, ItemDataWrapper> CustomItems { get; set; } = new();
 
     /// <summary>
-    /// Loads all custom cards from <see cref="CardsDirectoryPath"/>.
+    /// Loads all custom cards from <see cref="CardsDirectoryName"/>.
     /// </summary>
     /// <param name="____CardsSource">A member in the <see cref="Globals"/> class that holds all card data.</param>
     /// <param name="___cardsText">A member in the <see cref="Globals"/> that holds all card text.</param>
@@ -76,13 +76,7 @@ public class CreateCardClonesPrefix
     /// </summary>
     private static void LoadCustomItems()
     {
-        var itemDirectoryInfo = new DirectoryInfo(ItemDirectoryPath);
-        if (!itemDirectoryInfo.Exists)
-        {
-            itemDirectoryInfo.Create();
-        }
-
-        foreach (var itemFileInfo in itemDirectoryInfo.GetFiles("*.json", SearchOption.AllDirectories))
+        foreach (var itemFileInfo in DirectoryUtils.GetAllPluginSubFoldersByName(ItemsDirectoryName, "*.json"))
         {
             try
             {
@@ -99,13 +93,7 @@ public class CreateCardClonesPrefix
 
     private static void LoadCustomCards(Dictionary<string, CardData> cardsSource, ref string cardsText)
     {
-        var cardDirectoryInfo = new DirectoryInfo(CardsDirectoryPath);
-        if (!cardDirectoryInfo.Exists)
-        {
-            cardDirectoryInfo.Create();
-        }
-
-        foreach (var cardFileInfo in cardDirectoryInfo.GetFiles("*.json", SearchOption.AllDirectories))
+        foreach (var cardFileInfo in DirectoryUtils.GetAllPluginSubFoldersByName(CardsDirectoryName, "*.json"))
         {
             try
             {
