@@ -1,0 +1,20 @@
+{
+  "id": "auraexample",
+  "cardName": "Become Sharp",
+  "baseCard": "auraexample",
+  "upgradesTo1": "auraexample",
+  "upgradesTo2": "auraexample",
+  "upgradesToC": "auraexample",
+  "cardRarity": 0,
+  "cardType": 0,
+  "cardClass": 2,
+  "energyCost": 0,
+  "playable": true,
+  "targetSide": 3,
+  "showInTome": true,
+  "vanish": true,
+  "autoplayDraw": false,
+  "imageFileName": "TheEncyclopedia.png",
+  "iaura": "sharp",
+  "auraCharges": 12345
+}
