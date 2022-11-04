@@ -81,8 +81,8 @@ public class CreateCardClonesPrefix
             try
             {
                 var newItem = LoadItemFromDisk(itemFileInfo);
-                CustomItems[newItem.Id] = newItem;
                 UpdateItemAuras(ref newItem);
+                CustomItems[newItem.Id] = newItem;
             }
             catch (Exception ex)
             {
