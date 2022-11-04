@@ -10,7 +10,7 @@ namespace AtO_Loader.Utils
             var pluginFolder = new DirectoryInfo(Plugin.BasePluginDirectory);
             if (!pluginFolder.Exists)
             {
-                throw new DirectoryNotFoundException($"Missing the base plugin folder?");
+                throw new DirectoryNotFoundException($"Missing the base plugin folder? {pluginFolder.FullName}");
             }
 
             foreach (var folder in pluginFolder.EnumerateDirectories())
