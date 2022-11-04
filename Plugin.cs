@@ -9,10 +9,6 @@ namespace AtO_Loader;
 [BepInPlugin(ModGUID, ModName, ModVersion)]
 public partial class Plugin : BaseUnityPlugin
 {
-    /// <summary>
-    /// Base plugin directory.
-    /// </summary>
-    public const string BasePluginDirectory = "BepInEx\\plugins";
     private const string ModGUID = "Book.CardLoader";
     private const string ModName = "AtO_Loader";
     private const string ModVersion = "0.0.0.1";

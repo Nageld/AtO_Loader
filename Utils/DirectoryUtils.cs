@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using BepInEx;
 
 namespace AtO_Loader.Utils
 {
@@ -7,7 +8,7 @@ namespace AtO_Loader.Utils
     {
         public static IEnumerable<FileInfo> GetAllPluginSubFoldersByName(string subFolderName, string searchPattern)
         {
-            var pluginFolder = new DirectoryInfo(Plugin.BasePluginDirectory);
+            var pluginFolder = new DirectoryInfo(Paths.PluginPath);
             if (!pluginFolder.Exists)
             {
                 throw new DirectoryNotFoundException($"Missing the base plugin folder? {pluginFolder.FullName}");
