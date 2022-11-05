@@ -81,6 +81,7 @@ public class CreateCardClonesPrefix
             try
             {
                 var newItem = LoadItemFromDisk(itemFileInfo);
+                UpdateItemAuras(ref newItem);
                 CustomItems[newItem.Id] = newItem;
             }
             catch (Exception ex)
@@ -90,6 +91,50 @@ public class CreateCardClonesPrefix
             }
         }
     }
+
+    private static void UpdateCardAuras(ref CardDataWrapper card)
+    {
+        card.SpecialAuraCurseNameGlobal = Globals.Instance.GetAuraCurseData(card.ispecialAuraCurseNameGlobal);
+        card.SpecialAuraCurseName1 = Globals.Instance.GetAuraCurseData(card.ispecialAuraCurseName1);
+        card.SpecialAuraCurseName2 = Globals.Instance.GetAuraCurseData(card.ispecialAuraCurseName2);
+        card.AcEnergyBonus = Globals.Instance.GetAuraCurseData(card.iacEnergyBonus);
+        card.AcEnergyBonus2 = Globals.Instance.GetAuraCurseData(card.iacEnergyBonus2);
+        card.HealAuraCurseSelf = Globals.Instance.GetAuraCurseData(card.ihealAuraCurseSelf);
+        card.HealAuraCurseName = Globals.Instance.GetAuraCurseData(card.ihealAuraCurseName);
+        card.HealAuraCurseName2 = Globals.Instance.GetAuraCurseData(card.ihealAuraCurseName2);
+        card.HealAuraCurseName3 = Globals.Instance.GetAuraCurseData(card.ihealAuraCurseName3);
+        card.HealAuraCurseName4 = Globals.Instance.GetAuraCurseData(card.ihealAuraCurseName4);
+        card.Aura = Globals.Instance.GetAuraCurseData(card.iaura);
+        card.AuraSelf = Globals.Instance.GetAuraCurseData(card.iauraSelf);
+        card.Aura2 = Globals.Instance.GetAuraCurseData(card.iaura2);
+        card.AuraSelf2 = Globals.Instance.GetAuraCurseData(card.iauraSelf2);
+        card.Aura3 = Globals.Instance.GetAuraCurseData(card.iaura3);
+        card.AuraSelf3 = Globals.Instance.GetAuraCurseData(card.iauraSelf3);
+        card.Curse = Globals.Instance.GetAuraCurseData(card.icurse);
+        card.CurseSelf = Globals.Instance.GetAuraCurseData(card.icurseSelf);
+        card.Curse2 = Globals.Instance.GetAuraCurseData(card.icurse2);
+        card.CurseSelf2 = Globals.Instance.GetAuraCurseData(card.icurseSelf2);
+        card.Curse3 = Globals.Instance.GetAuraCurseData(card.icurse3);
+        card.CurseSelf3 = Globals.Instance.GetAuraCurseData(card.icurseSelf3);
+        card.SummonAura = Globals.Instance.GetAuraCurseData(card.isummonAura);
+        card.SummonAura2 = Globals.Instance.GetAuraCurseData(card.isummonAura2);
+        card.SummonAura3 = Globals.Instance.GetAuraCurseData(card.isummonAura3);
+    }
+
+    private static void UpdateItemAuras(ref ItemDataWrapper item)
+        {
+            item.AuraCurseSetted = Globals.Instance.GetAuraCurseData(item.iauraCurseSetted);
+            item.AuracurseBonus1 = Globals.Instance.GetAuraCurseData(item.iauracurseBonus1);
+            item.AuracurseBonus2 = Globals.Instance.GetAuraCurseData(item.iauracurseBonus2);
+            item.AuracurseImmune1 = Globals.Instance.GetAuraCurseData(item.iauracurseImmune1);
+            item.AuracurseGain1 = Globals.Instance.GetAuraCurseData(item.iauracurseGain1);
+            item.AuracurseGain2 = Globals.Instance.GetAuraCurseData(item.iauracurseGain2);
+            item.AuracurseGain3 = Globals.Instance.GetAuraCurseData(item.iauracurseGain3);
+            item.AuracurseGainSelf1 = Globals.Instance.GetAuraCurseData(item.iauracurseGainSelf1);
+            item.AuracurseGainSelf2 = Globals.Instance.GetAuraCurseData(item.iauracurseGainSelf2);
+            item.AuracurseCustomAC = Globals.Instance.GetAuraCurseData(item.iauracurseCustomAC);
+            item.AuracurseImmune2 = Globals.Instance.GetAuraCurseData(item.iauracurseImmune2);
+        }
 
     private static void LoadCustomCards(Dictionary<string, CardData> cardsSource, ref string cardsText)
     {
@@ -204,6 +249,7 @@ public class CreateCardClonesPrefix
         }
 
         newCard.Id = newCard.Id.ToLower();
+        UpdateCardAuras(ref newCard);
 
         if (!cardsSource.ContainsKey(newCard.Id))
         {

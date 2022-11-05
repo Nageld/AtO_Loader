@@ -32,5 +32,6 @@ public partial class Plugin : BaseUnityPlugin
         this.harmony.PatchAll(typeof(SetObeliskScore));
         this.harmony.PatchAll(typeof(Start));
         this.harmony.PatchAll(typeof(GameVersionToNumber));
+        this.harmony.PatchAll(typeof(GetAuraCurseData));
     }
 }
