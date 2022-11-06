@@ -192,10 +192,10 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
         newCard.CardClass = cardClass;
 
         newCard.BaseCard = newCard.BaseCard.AppendNotNullOrWhiteSpace(cardClassString);
-        newCard.Id = newCard.BaseCard;
 
         if (newCard.CardUpgraded != CardUpgraded.No)
         {
+            newCard.Id = newCard.BaseCard;
             newCard.UpgradedFrom = newCard.BaseCard;
             newCard.Id.AppendNotNullOrWhiteSpace(CardUpgradeAppendString[newCard.CardUpgraded]);
         }
