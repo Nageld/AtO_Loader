@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using AtO_Loader.Patches.DataLoader;
+﻿using AtO_Loader.Patches.DataLoader;
 using HarmonyLib;
+using System.Collections.Generic;
 
 namespace AtO_Loader.Patches;
 

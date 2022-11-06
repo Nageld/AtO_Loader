@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using AtO_Loader.DataLoader.DataWrapper;
+﻿using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
+using System.Collections.Generic;
 
 namespace AtO_Loader.Patches.DataLoader;
 
@@ -23,12 +23,12 @@ public class ItemDataLoader : DataLoaderBase<ItemDataWrapper, ItemData>
     {
         if (string.IsNullOrWhiteSpace(data.Id))
         {
-            Plugin.LogError($"Item: '{data.Id}' is missing the required field 'id'.");
+            Plugin.Logger.LogError($"Item: '{data.Id}' is missing the required field 'id'.");
             return false;
         }
         else if (RegexUtils.HasInvalidIdRegex.IsMatch(data.Id))
         {
-            Plugin.LogError($"Item: '{data.Id} is an invalid id. Ids should only consist of letters and numbers.");
+            Plugin.Logger.LogError($"Item: '{data.Id} is an invalid id. Ids should only consist of letters and numbers.");
             return false;
         }
 

@@ -1,7 +1,5 @@
-﻿using System.Runtime.CompilerServices;
-using AtO_Loader.Patches;
+﻿using AtO_Loader.Patches;
 using BepInEx;
-using BepInEx.Logging;
 using HarmonyLib;
 
 namespace AtO_Loader;
@@ -18,48 +16,16 @@ public partial class Plugin : BaseUnityPlugin
     private readonly Harmony harmony = new(ModGUID);
 
     /// <summary>
-    /// Gets or sets harmony Logger instance.
+    /// Gets the log instance.
     /// </summary>
-    private static new ManualLogSource Logger { get; set; }
-
-    /// <summary>
-    /// Logs Errors to console.
-    /// </summary>
-    /// <param name="message">Message.</param>
-    /// <param name="methodName">Autopopulated method name.</param>
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void LogError(object message, [CallerMemberName] string methodName = null)
-        => Log(message, LogLevel.Error, methodName);
-
-    /// <summary>
-    /// Logs warning to console.
-    /// </summary>
-    /// <param name="message">Message.</param>
-    /// <param name="methodName">Autopopulated method name.</param>
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void LogWarning(object message, [CallerMemberName] string methodName = null)
-        => Log(message, LogLevel.Warning, methodName);
-
-    /// <summary>
-    /// Logs Info to console.
-    /// </summary>
-    /// <param name="message">Message.</param>
-    /// <param name="methodName">Autopopulated method name.</param>
-    [MethodImpl(MethodImplOptions.NoInlining)]
-    public static void LogInfo(object message, [CallerMemberName] string methodName = null)
-        => Log(message, LogLevel.Info, methodName);
-
-    private static void Log(object message, LogLevel logLevel, string methodName = null)
-    {
-        Logger.Log(logLevel, $"[{nameof(DeserializeCards)}] {message}");
-    }
+    public static Logger Logger { get; private set; }
 
     /// <summary>
     /// Unity awake method.
     /// </summary>
     private void Awake()
     {
-        Logger = base.Logger;
+        Logger = new Logger(base.Logger);
         this.harmony.PatchAll(typeof(DeserializeItems));
         this.harmony.PatchAll(typeof(DeserializeCards));
         this.harmony.PatchAll(typeof(DeserializeSubClasses));

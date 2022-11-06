@@ -1,9 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using AtO_Loader.DataLoader.DataWrapper;
+﻿using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Patches.DataLoader;
-using BepInEx;
 using HarmonyLib;
+using System.Collections.Generic;
+using System.Linq;
 using static Enums;
 
 namespace AtO_Loader.Patches;
@@ -29,7 +28,7 @@ public class DeserializeCards
     [HarmonyPrefix]
     public static void LoadCustomCardAndItems(Dictionary<string, CardData> ____CardsSource, ref string ___cardsText)
     {
-        Plugin.LogInfo("Loading Custom Cards");
+        Plugin.Logger.LogInfo("Loading Custom Cards");
         var cardDatas = new CardDataLoader(____CardsSource).LoadData();
         foreach (var cardData in cardDatas)
         {
