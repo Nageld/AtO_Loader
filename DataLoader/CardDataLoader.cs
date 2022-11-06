@@ -148,7 +148,7 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
 
             var baseCard = (CardData)customCardCard ?? preExistingCard;
 
-            switch (baseCard.CardUpgraded)
+            switch (card.CardUpgraded)
             {
                 case CardUpgraded.A:
                     baseCard.UpgradesTo1 = card.Id;
@@ -166,8 +166,6 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
     /// <inheritdoc/>
     protected override void ForLoopProcessing(Dictionary<string, CardDataWrapper> datas, CardDataWrapper data)
     {
-        Plugin.LogInfo($"{data.CardName} {data.Id} {data.BaseCard}");
-
         // if it isn't a multi class card.
         if ((int)data.CardClass != -1)
         {
