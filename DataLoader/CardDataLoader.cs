@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
 using UnityEngine;
@@ -118,6 +119,12 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
         return true;
     }
 
+    /// <inheritdoc/>
+    protected override void PostLoadDataFromDisk(FileInfo fileInfo, CardDataWrapper data)
+    {
+        data.LoadSprite(fileInfo);
+    }
+
     /// <summary>
     /// Set corrupted cards instance to their base counter parts.
     /// </summary>
@@ -160,16 +167,19 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
     protected override void ForLoopProcessing(Dictionary<string, CardDataWrapper> datas, CardDataWrapper data)
     {
         Plugin.LogInfo($"{data.CardName} {data.Id} {data.BaseCard}");
+
         // if it isn't a multi class card.
         if ((int)data.CardClass != -1)
         {
+            this.UpdateCardData(data);
             base.ForLoopProcessing(datas, data);
         }
         else
         {
             foreach (var cardClass in MultiCardClasses)
             {
-                var cloneData = MultiClassCardUpdate(data, cardClass);
+                var cloneData = this.MultiClassCardUpdate(data, cardClass);
+                this.UpdateCardData(cloneData);
                 base.ForLoopProcessing(datas, cloneData);
             }
 
@@ -184,7 +194,7 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
     /// <param name="data">The template card to clone from.</param>
     /// <param name="cardClass">Card class to copy to.</param>
     /// <returns>New instance of the custom card for the given <see cref="CardClass"/>.</returns>
-    private static CardDataWrapper MultiClassCardUpdate(CardDataWrapper data, in CardClass cardClass)
+    private CardDataWrapper MultiClassCardUpdate(CardDataWrapper data, CardClass cardClass)
     {
         var newCard = Object.Instantiate(data);
 
@@ -193,14 +203,28 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
 
         if (newCard.CardUpgraded == CardUpgraded.No)
         {
+            // base cards already have ids just have to append class string to them.
             newCard.Id = newCard.Id.AppendNotNullOrWhiteSpace(cardClassString);
-            newCard.BaseCard = newCard.Id;
         }
         else
         {
+            // upgraded cards id is its base card.
             newCard.BaseCard = newCard.BaseCard.AppendNotNullOrWhiteSpace(cardClassString);
         }
 
         return newCard;
+    }
+
+    private void UpdateCardData(CardDataWrapper data)
+    {
+        if (data.CardUpgraded == CardUpgraded.No)
+        {
+            data.BaseCard = data.Id;
+        }
+        else
+        {
+            data.Id = data.BaseCard.AppendNotNullOrWhiteSpace(CardUpgradeAppendString[data.CardUpgraded]);
+            data.UpgradedFrom = data.BaseCard;
+        }
     }
 }

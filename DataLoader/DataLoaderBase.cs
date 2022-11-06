@@ -59,10 +59,10 @@ public abstract class DataLoaderBase<T1, T2>
                 Plugin.LogInfo($"Reading json from disk {dataFileInfo.FullName}");
                 var data = this.LoadDataFromDisk(dataFileInfo);
 
-                Plugin.LogInfo($"Validating data object {data.DataID}");
+                Plugin.LogInfo($"Validating data object {dataFileInfo.Name}");
                 if (this.ValidateData(data))
                 {
-                    Plugin.LogInfo($"For Loop Processing {data.DataID}");
+                    Plugin.LogInfo($"For Loop Processing {dataFileInfo.Name}");
                     this.ForLoopProcessing(datas, data);
                 }
                 else
@@ -93,7 +93,24 @@ public abstract class DataLoaderBase<T1, T2>
         var data = ScriptableObject.CreateInstance<T1>();
         data.DataID = data.DataID?.ToLower();
         JsonUtility.FromJsonOverwrite(json, data);
-        return this.ValidateData(data) ? data : null;
+        if (this.ValidateData(data))
+        {
+            this.PostLoadDataFromDisk(fileInfo, data);
+            return data;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// After loading data from disk processing.
+    /// </summary>
+    /// <param name="fileInfo">FileInfo for data.</param>
+    /// <param name="data">New data object.</param>
+    protected virtual void PostLoadDataFromDisk(FileInfo fileInfo, T1 data)
+    {
     }
 
     /// <summary>
