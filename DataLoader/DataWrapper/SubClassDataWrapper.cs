@@ -1,6 +1,6 @@
-﻿namespace AtO_Loader.Patches.DataLoader.DataWrapper;
+﻿namespace AtO_Loader.DataLoader.DataWrapper;
 
-public class SubClassDataWrapperBase : SubClassData, IDataWrapper
+public class SubClassDataWrapper : SubClassData, IDataWrapper
 {
     public int[] cardCounts;
     public string[] cardIds;

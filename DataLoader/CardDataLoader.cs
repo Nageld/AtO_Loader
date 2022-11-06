@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using AtO_Loader.Patches.DataLoader.DataWrapper;
+using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
+using UnityEngine;
 using static Enums;
 
 namespace AtO_Loader.Patches.DataLoader;
@@ -17,6 +17,27 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper>
         CardType.Armor,
         CardType.Weapon,
         CardType.Jewelry,
+    };
+
+    /// <summary>
+    /// Hardcoded list of classes that cardClass -1 will generate for.
+    /// </summary>
+    private static readonly List<CardClass> MultiCardClasses = new()
+    {
+        CardClass.Warrior,
+        CardClass.Mage,
+        CardClass.Healer,
+        CardClass.Scout,
+    };
+
+    /// <summary>
+    /// Hardcoded dictionary for appending id's with, due to game using these templates names to find cards.
+    /// </summary>
+    private static readonly Dictionary<CardUpgraded, string> CardUpgradeAppendString = new()
+    {
+        [CardUpgraded.A] = "a",
+        [CardUpgraded.B] = "b",
+        [CardUpgraded.Rare] = "rare",
     };
 
     /// <inheritdoc/>
@@ -98,32 +119,82 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper>
     protected override void PostProcessing(Dictionary<string, CardDataWrapper> datas)
     {
         // have to loop again cause of the rare card reference assignment and upgrade string assignment
-        foreach (var upgradedCard in datas.Values)
+        foreach (var card in datas.Values)
         {
             // ignore base cards
-            if (upgradedCard.CardUpgraded == CardUpgraded.No)
+            if (card.CardUpgraded == CardUpgraded.No)
             {
                 continue;
             }
 
-            if (!datas.TryGetValue(upgradedCard.BaseCard, out var baseCard))
+            if (!datas.TryGetValue(card.BaseCard, out var baseCard))
             {
-                Plugin.LogError($"Custom card '{upgradedCard.CardName}' has a baseCard '{upgradedCard.BaseCard}' but the baseCard does not exist, please check spelling or create a baseCard with that Id");
+                Plugin.LogError($"Custom card '{card.CardName}' has a baseCard '{card.BaseCard}' but the baseCard does not exist, please check spelling or create a baseCard with that Id");
                 continue;
             }
 
-            switch (upgradedCard.CardUpgraded)
+            switch (card.CardUpgraded)
             {
                 case CardUpgraded.A:
-                    baseCard.UpgradesTo1 = upgradedCard.Id;
+                    baseCard.UpgradesTo1 = card.Id;
                     break;
                 case CardUpgraded.B:
-                    baseCard.UpgradesTo2 = upgradedCard.Id;
+                    baseCard.UpgradesTo2 = card.Id;
                     break;
                 case CardUpgraded.Rare:
-                    baseCard.UpgradesToRare = upgradedCard;
+                    baseCard.UpgradesToRare = card;
                     break;
             }
         }
+    }
+
+    /// <inheritdoc/>
+    protected override void AddToDictionary(Dictionary<string, CardDataWrapper> datas, CardDataWrapper data)
+    {
+        // if it isn't a multi class card.
+        if ((int)data.CardClass != -1)
+        {
+            base.AddToDictionary(datas, data);
+        }
+        else
+        {
+            foreach (var cardClass in MultiCardClasses)
+            {
+                var cloneData = MultiClassCardUpdate(data, cardClass);
+                base.AddToDictionary(datas, cloneData);
+            }
+
+            // Cleanup to destroy the base card with -1 card class.
+            Object.Destroy(data);
+        }
+    }
+
+    /// <summary>
+    /// Creates copies of a single template custom card for each class.
+    /// </summary>
+    /// <param name="data">The template card to clone from.</param>
+    /// <param name="cardClass">Card class to copy to.</param>
+    /// <returns>New instance of the custom card for the given <see cref="CardClass"/>.</returns>
+    private static CardDataWrapper MultiClassCardUpdate(CardDataWrapper data, in CardClass cardClass)
+    {
+        var newCard = Object.Instantiate(data);
+
+        var cardClassString = cardClass.ToString().ToLower();
+        newCard.CardClass = cardClass;
+
+        if (newCard.CardUpgraded == CardUpgraded.No)
+        {
+            newCard.Id = newCard.Id.AppendNotNullOrWhiteSpace(cardClassString);
+            newCard.BaseCard = newCard.Id;
+        }
+        else
+        {
+            newCard.BaseCard = newCard.BaseCard
+                .AppendNotNullOrWhiteSpace(cardClassString)
+                .AppendNotNullOrWhiteSpace(CardUpgradeAppendString[newCard.CardUpgraded]);
+            newCard.UpgradedFrom = newCard.BaseCard;
+        }
+
+        return newCard;
     }
 }
