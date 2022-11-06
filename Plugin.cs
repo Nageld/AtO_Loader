@@ -60,16 +60,16 @@ public partial class Plugin : BaseUnityPlugin
     private void Awake()
     {
         Logger = base.Logger;
-        //this.harmony.PatchAll(typeof(DeserializeItems));
+        this.harmony.PatchAll(typeof(DeserializeItems));
         this.harmony.PatchAll(typeof(DeserializeCards));
-        //this.harmony.PatchAll(typeof(DeserializeSubClasses));
-        //this.harmony.PatchAll(typeof(IsCardUnlocked));
-        //this.harmony.PatchAll(typeof(GetKeyNotesData));
-        //this.harmony.PatchAll(typeof(LoadPlayerData));
-        //this.harmony.PatchAll(typeof(SetScore));
-        //this.harmony.PatchAll(typeof(SetWeeklyScore));
-        //this.harmony.PatchAll(typeof(SetObeliskScore));
-        //this.harmony.PatchAll(typeof(Start));
-        //this.harmony.PatchAll(typeof(GameVersionToNumber));
+        this.harmony.PatchAll(typeof(DeserializeSubClasses));
+        this.harmony.PatchAll(typeof(IsCardUnlocked));
+        this.harmony.PatchAll(typeof(GetKeyNotesData));
+        this.harmony.PatchAll(typeof(LoadPlayerData));
+        this.harmony.PatchAll(typeof(SetScore));
+        this.harmony.PatchAll(typeof(SetWeeklyScore));
+        this.harmony.PatchAll(typeof(SetObeliskScore));
+        this.harmony.PatchAll(typeof(Start));
+        this.harmony.PatchAll(typeof(GameVersionToNumber));
     }
 }

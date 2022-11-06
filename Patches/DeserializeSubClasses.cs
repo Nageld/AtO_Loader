@@ -8,12 +8,9 @@ namespace AtO_Loader.Patches;
 public class DeserializeSubClasses
 {
     [HarmonyPostfix]
-    public static void LoadCharacterData(Dictionary<string, SubClassData> ____SubClassSource)
+    public static void LoadCharacterData(Dictionary<string, SubClassData> ____SubClass)
     {
-        var subClassDatas = new SubClassDataLoader(____SubClassSource).LoadData();
-        foreach (var subClassData in subClassDatas)
-        {
-            ____SubClassSource[subClassData.Key] = subClassData.Value;
-        }
+        // sub classes are too annoying to not modify directly.
+        _ = new SubClassDataLoader(____SubClass).LoadData();
     }
 }

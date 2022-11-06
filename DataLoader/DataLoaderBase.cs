@@ -59,20 +59,18 @@ public abstract class DataLoaderBase<T1, T2>
                 Plugin.LogInfo($"Reading json from disk {dataFileInfo.FullName}");
                 var data = this.LoadDataFromDisk(dataFileInfo);
 
-                Plugin.LogInfo($"Validating data object {dataFileInfo.Name}");
                 if (this.ValidateData(data))
                 {
-                    Plugin.LogInfo($"For Loop Processing {dataFileInfo.Name}");
                     this.ForLoopProcessing(datas, data);
                 }
                 else
                 {
-                    Plugin.LogError($"Failed to parse {nameof(T1)} from json '{dataFileInfo.FullName}'");
+                    Plugin.LogError($"Failed to parse {typeof(T1)} from json '{dataFileInfo.FullName}'");
                 }
             }
             catch (Exception ex)
             {
-                Plugin.LogError($"Failed to parse {nameof(T1)} from json '{dataFileInfo.FullName}'");
+                Plugin.LogError($"Failed to parse {typeof(T1)} from json '{dataFileInfo.FullName}'");
                 Plugin.LogError(ex);
             }
         }
