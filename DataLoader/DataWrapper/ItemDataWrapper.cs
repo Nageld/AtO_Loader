@@ -1,4 +1,4 @@
-﻿namespace AtO_Loader.Patches.DataLoader.DataWrapper;
+﻿namespace AtO_Loader.DataLoader.DataWrapper;
 
 public class ItemDataWrapper : ItemData, IDataWrapper
 {
