@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using AtO_Loader.Patches.DataLoader.DataWrapper;
+using AtO_Loader.DataLoader.DataWrapper;
 using HarmonyLib;
 
 namespace AtO_Loader.Patches;

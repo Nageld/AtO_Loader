@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using AtO_Loader;
-using AtO_Loader.Patches.DataLoader.DataWrapper;
+using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
 using HarmonyLib;
 using UnityEngine;
@@ -146,10 +146,10 @@ public class CreateCardClonesPostfix
         }
     }
 
-    private static SubClassDataWrapperBase LoadCharacterFromDisk(FileInfo cardFileInfo)
+    private static SubClassDataWrapper LoadCharacterFromDisk(FileInfo cardFileInfo)
     {
         var json = File.ReadAllText(cardFileInfo.FullName);
-        var newCharacter = ScriptableObject.CreateInstance<SubClassDataWrapperBase>();
+        var newCharacter = ScriptableObject.CreateInstance<SubClassDataWrapper>();
         JsonUtility.FromJsonOverwrite(json, newCharacter);
         if (string.IsNullOrWhiteSpace(newCharacter.SubClassName))
         {
