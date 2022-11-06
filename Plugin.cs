@@ -27,6 +27,7 @@ public partial class Plugin : BaseUnityPlugin
     /// </summary>
     /// <param name="message">Message.</param>
     /// <param name="methodName">Autopopulated method name.</param>
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void LogError(object message, [CallerMemberName] string methodName = null)
         => Log(message, LogLevel.Error, methodName);
 
@@ -35,6 +36,7 @@ public partial class Plugin : BaseUnityPlugin
     /// </summary>
     /// <param name="message">Message.</param>
     /// <param name="methodName">Autopopulated method name.</param>
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void LogWarning(object message, [CallerMemberName] string methodName = null)
         => Log(message, LogLevel.Warning, methodName);
 
@@ -43,12 +45,13 @@ public partial class Plugin : BaseUnityPlugin
     /// </summary>
     /// <param name="message">Message.</param>
     /// <param name="methodName">Autopopulated method name.</param>
+    [MethodImpl(MethodImplOptions.NoInlining)]
     public static void LogInfo(object message, [CallerMemberName] string methodName = null)
         => Log(message, LogLevel.Info, methodName);
 
     private static void Log(object message, LogLevel logLevel, string methodName = null)
     {
-        Logger.Log(logLevel, $"[{nameof(CreateCardClonesPrefix)}] {message}");
+        Logger.Log(logLevel, $"[{nameof(DeserializeCards)}] {message}");
     }
 
     /// <summary>
@@ -57,15 +60,16 @@ public partial class Plugin : BaseUnityPlugin
     private void Awake()
     {
         Logger = base.Logger;
-        this.harmony.PatchAll(typeof(CreateCardClonesPrefix));
-        this.harmony.PatchAll(typeof(CreateCardClonesPostfix));
-        this.harmony.PatchAll(typeof(IsCardUnlocked));
-        this.harmony.PatchAll(typeof(GetKeyNotesData));
-        this.harmony.PatchAll(typeof(LoadPlayerData));
-        this.harmony.PatchAll(typeof(SetScore));
-        this.harmony.PatchAll(typeof(SetWeeklyScore));
-        this.harmony.PatchAll(typeof(SetObeliskScore));
-        this.harmony.PatchAll(typeof(Start));
-        this.harmony.PatchAll(typeof(GameVersionToNumber));
+        //this.harmony.PatchAll(typeof(DeserializeItems));
+        this.harmony.PatchAll(typeof(DeserializeCards));
+        //this.harmony.PatchAll(typeof(DeserializeSubClasses));
+        //this.harmony.PatchAll(typeof(IsCardUnlocked));
+        //this.harmony.PatchAll(typeof(GetKeyNotesData));
+        //this.harmony.PatchAll(typeof(LoadPlayerData));
+        //this.harmony.PatchAll(typeof(SetScore));
+        //this.harmony.PatchAll(typeof(SetWeeklyScore));
+        //this.harmony.PatchAll(typeof(SetObeliskScore));
+        //this.harmony.PatchAll(typeof(Start));
+        //this.harmony.PatchAll(typeof(GameVersionToNumber));
     }
 }

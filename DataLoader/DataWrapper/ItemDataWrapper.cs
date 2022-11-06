@@ -6,5 +6,5 @@ public class ItemDataWrapper : ItemData, IDataWrapper
     public string imageFileName;
 
     /// <inheritdoc/>
-    public string GetID => this.Id;
+    public string DataID { get => this.Id; set => this.Id = value; }
 }

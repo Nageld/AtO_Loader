@@ -1,10 +1,20 @@
-﻿using AtO_Loader.DataLoader.DataWrapper;
+﻿using System.Collections.Generic;
+using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
 
 namespace AtO_Loader.Patches.DataLoader;
 
-public class ItemDataLoader : DataLoaderBase<ItemDataWrapper>
+public class ItemDataLoader : DataLoaderBase<ItemDataWrapper, ItemData>
 {
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ItemDataLoader"/> class.
+    /// </summary>
+    /// <param name="dataSource">Data source for this loader.</param>
+    public ItemDataLoader(Dictionary<string, ItemData> dataSource)
+        : base(dataSource)
+    {
+    }
+
     /// <inheritdoc/>
     protected override string DirectoryName { get => "Items"; }
 
@@ -20,10 +30,6 @@ public class ItemDataLoader : DataLoaderBase<ItemDataWrapper>
         {
             Plugin.LogError($"Item: '{data.Id} is an invalid id. Ids should only consist of letters and numbers.");
             return false;
-        }
-        else
-        {
-            data.Id = data.Id.ToLower();
         }
 
         return true;

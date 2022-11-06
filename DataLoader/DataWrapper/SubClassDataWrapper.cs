@@ -11,5 +11,5 @@ public class SubClassDataWrapper : SubClassData, IDataWrapper
     public string startingItem;
 
     /// <inheritdoc/>
-    public string GetID => this.Id;
+    public string DataID { get => this.Id; set => this.Id = value; }
 }
