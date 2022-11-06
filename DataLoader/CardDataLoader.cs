@@ -91,10 +91,9 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
             }
 
             newCard.itemId = newCard.itemId.ToLower();
-            var itemData = Globals.Instance.GetItemData(newCard.itemId);
 
             // assign item reference via static dictionary lookup
-            if (itemData != null)
+            if (DeserializeItems.CustomItems.TryGetValue(newCard.itemId, out var itemData))
             {
                 newCard.Item = itemData;
             }
