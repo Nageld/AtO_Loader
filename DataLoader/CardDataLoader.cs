@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using AtO_Loader.DataLoader.DataWrapper;
+﻿using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
+using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using static Enums;
 
@@ -61,12 +61,12 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
         {
             if (string.IsNullOrWhiteSpace(newCard.Id))
             {
-                Plugin.LogError($"'{newCard.CardName}' is missing the required field 'id'.");
+                Plugin.Logger.LogError($"'{newCard.CardName}' is missing the required field 'id'.");
                 return false;
             }
             else if (RegexUtils.HasInvalidIdRegex.IsMatch(newCard.Id))
             {
-                Plugin.LogError($"'{newCard.CardName}' has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
+                Plugin.Logger.LogError($"'{newCard.CardName}' has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
                 return false;
             }
         }
@@ -76,17 +76,17 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
         {
             if (RegexUtils.HasInvalidIdRegex.IsMatch(newCard.itemId))
             {
-                Plugin.LogError($"'{newCard.CardName}' has an invalid {nameof(newCard.itemId)}: {newCard.itemId}, ids should only consist of letters and numbers.");
+                Plugin.Logger.LogError($"'{newCard.CardName}' has an invalid {nameof(newCard.itemId)}: {newCard.itemId}, ids should only consist of letters and numbers.");
                 return false;
             }
             else if (newCard.CardClass != CardClass.Item)
             {
-                Plugin.LogError($"'{newCard.CardName}' has an {nameof(newCard.itemId)} defined but has an invalid {nameof(newCard.CardClass)}: {newCard.CardClass}.");
+                Plugin.Logger.LogError($"'{newCard.CardName}' has an {nameof(newCard.itemId)} defined but has an invalid {nameof(newCard.CardClass)}: {newCard.CardClass}.");
                 return false;
             }
             else if (!ValidItemCardTypes.Contains(newCard.CardType))
             {
-                Plugin.LogError($"'{newCard.CardName}' has an {nameof(newCard.itemId)} defined but has an invalid {nameof(newCard.CardType)}: {newCard.CardType}, this should be one of the item types.");
+                Plugin.Logger.LogError($"'{newCard.CardName}' has an {nameof(newCard.itemId)} defined but has an invalid {nameof(newCard.CardType)}: {newCard.CardType}, this should be one of the item types.");
                 return false;
             }
 
@@ -99,7 +99,7 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
             }
             else
             {
-                Plugin.LogError($"'{newCard.CardName}' has an {nameof(newCard.itemId)}: {newCard.itemId} defined but cannot be found.");
+                Plugin.Logger.LogError($"'{newCard.CardName}' has an {nameof(newCard.itemId)}: {newCard.itemId} defined but cannot be found.");
                 return false;
             }
 
@@ -110,7 +110,7 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
             // validate upgraded cards
             if (string.IsNullOrWhiteSpace(newCard.BaseCard))
             {
-                Plugin.LogError($"'{newCard.CardName}' is upgrade type '{newCard.CardUpgraded}', but is missing 'baseCard' field in json.");
+                Plugin.Logger.LogError($"'{newCard.CardName}' is upgrade type '{newCard.CardUpgraded}', but is missing 'baseCard' field in json.");
                 return false;
             }
         }
@@ -141,7 +141,7 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
 
             if (!datas.TryGetValue(card.BaseCard, out var customCardCard) & !this.DataSource.TryGetValue(card.BaseCard, out var preExistingCard))
             {
-                Plugin.LogError($"Custom card '{card.CardName}' has a baseCard '{card.BaseCard}' but the baseCard does not exist, please check spelling or create a baseCard with that Id");
+                Plugin.Logger.LogError($"Custom card '{card.CardName}' has a baseCard '{card.BaseCard}' but the baseCard does not exist, please check spelling or create a baseCard with that Id");
                 continue;
             }
 

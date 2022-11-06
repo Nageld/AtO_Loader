@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AtO_Loader.DataLoader.DataWrapper;
+using AtO_Loader.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using AtO_Loader.DataLoader.DataWrapper;
-using AtO_Loader.Utils;
 using UnityEngine;
 using static Enums;
 
@@ -56,7 +56,7 @@ public abstract class DataLoaderBase<T1, T2>
         {
             try
             {
-                Plugin.LogInfo($"Reading json from disk {dataFileInfo.FullName}");
+                Plugin.Logger.LogInfo($"Reading json from disk {dataFileInfo.FullName}");
                 var data = this.LoadDataFromDisk(dataFileInfo);
 
                 if (this.ValidateData(data))
@@ -65,13 +65,13 @@ public abstract class DataLoaderBase<T1, T2>
                 }
                 else
                 {
-                    Plugin.LogError($"Failed to parse {typeof(T1)} from json '{dataFileInfo.FullName}'");
+                    Plugin.Logger.LogError($"Failed to parse {typeof(T1)} from json '{dataFileInfo.FullName}'");
                 }
             }
             catch (Exception ex)
             {
-                Plugin.LogError($"Failed to parse {typeof(T1)} from json '{dataFileInfo.FullName}'");
-                Plugin.LogError(ex);
+                Plugin.Logger.LogError($"Failed to parse {typeof(T1)} from json '{dataFileInfo.FullName}'");
+                Plugin.Logger.LogError(ex);
             }
         }
 
@@ -133,7 +133,7 @@ public abstract class DataLoaderBase<T1, T2>
     /// <param name="data">The new data.</param>
     protected virtual void ForLoopProcessing(Dictionary<string, T1> datas, T1 data)
     {
-        Plugin.LogInfo($"Loaded: {data.DataID}");
+        Plugin.Logger.LogInfo($"Loaded: {data.DataID}");
         datas[data.DataID] = data;
     }
 }
