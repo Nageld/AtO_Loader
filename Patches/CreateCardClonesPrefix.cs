@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using AtO_Loader.Patches.DataLoader;
+using AtO_Loader.Patches.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
 using HarmonyLib;
+using MonoMod.Utils;
 using UnityEngine;
 using static Enums;
 
-namespace AtO_Loader.Patches.CustomDataLoader;
+namespace AtO_Loader.Patches;
 
 [HarmonyPatch(typeof(Globals), "CreateCardClones")]
 public class CreateCardClonesPrefix
@@ -63,32 +66,16 @@ public class CreateCardClonesPrefix
     /// Loads all custom cards from <see cref="CardsDirectoryName"/>.
     /// </summary>
     /// <param name="____CardsSource">A member in the <see cref="Globals"/> class that holds all card data.</param>
+    /// <param name="____ItemDataSource">A member in the <see cref="Globals"/> class that holds all item data.</param>
     /// <param name="___cardsText">A member in the <see cref="Globals"/> that holds all card text.</param>
     [HarmonyPrefix]
-    public static void LoadCustomCardAndItems(Dictionary<string, CardData> ____CardsSource, ref string ___cardsText)
+    public static void LoadCustomCardAndItems(Dictionary<string, CardData> ____CardsSource, Dictionary<string, ItemData> ____ItemDataSource, ref string ___cardsText)
     {
-        LoadCustomItems();
-        LoadCustomCards(____CardsSource, ref ___cardsText);
-    }
+        var itemDatas = new ItemDataLoader().LoadData();
+        ____ItemDataSource.AddRange(itemDatas);
 
-    /// <summary>
-    /// Loads all custom items from disk but does not assign them to the games dictionary yet as its not instantiated.
-    /// </summary>
-    private static void LoadCustomItems()
-    {
-        foreach (var itemFileInfo in DirectoryUtils.GetAllPluginSubFoldersByName(ItemsDirectoryName, "*.json"))
-        {
-            try
-            {
-                var newItem = LoadItemFromDisk(itemFileInfo);
-                CustomItems[newItem.Id] = newItem;
-            }
-            catch (Exception ex)
-            {
-                Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Failed to parse Item data from json '{itemFileInfo.FullName}'");
-                Plugin.Logger.LogError(ex);
-            }
-        }
+        var cardDatas = new CardDataLoader().LoadData();
+        ____CardsSource.AddRange(cardDatas);
     }
 
     private static void LoadCustomCards(Dictionary<string, CardData> cardsSource, ref string cardsText)
@@ -121,8 +108,8 @@ public class CreateCardClonesPrefix
             }
             catch (Exception ex)
             {
-                Plugin.Logger.LogError($"{nameof(CreateCardClonesPrefix)}: Failed to parse card data from json '{cardFileInfo.FullName}'");
-                Plugin.Logger.LogError(ex);
+                Plugin.LogError($"{nameof(CreateCardClonesPrefix)}: Failed to parse card data from json '{cardFileInfo.FullName}'");
+                Plugin.LogError(ex);
             }
         }
 
@@ -137,7 +124,7 @@ public class CreateCardClonesPrefix
 
             if (!cardsSource.TryGetValue(upgradedCard.BaseCard, out var baseCard))
             {
-                Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Custom card '{upgradedCard.CardName}' has a baseCard '{upgradedCard.BaseCard}' but the baseCard does not exist, please check spelling or create a baseCard with that Id");
+                Plugin.LogError($"[{nameof(CreateCardClonesPrefix)}] Custom card '{upgradedCard.CardName}' has a baseCard '{upgradedCard.BaseCard}' but the baseCard does not exist, please check spelling or create a baseCard with that Id");
                 continue;
             }
 
@@ -190,7 +177,7 @@ public class CreateCardClonesPrefix
     /// <param name="newCard">The new custom card to insert.</param>
     private static void AddCardInternalDictionary(Dictionary<string, CardData> cardsSource, ref string cardsText, CardDataWrapper newCard)
     {
-        Plugin.Logger.LogInfo($"Loading Custom Card - Id: {newCard.Id ?? newCard.BaseCard} Class: {newCard.CardClass}  Upgrade: {newCard.CardUpgraded}");
+        Plugin.LogInfo($"Loading Custom Card - Id: {newCard.Id ?? newCard.BaseCard} Class: {newCard.CardClass}  Upgrade: {newCard.CardUpgraded}");
 
         // if its not the base card setup the id for it
         if (newCard.CardUpgraded != CardUpgraded.No)
@@ -233,30 +220,6 @@ public class CreateCardClonesPrefix
         }
     }
 
-    private static ItemDataWrapper LoadItemFromDisk(FileInfo itemFileInfo)
-    {
-        var json = File.ReadAllText(itemFileInfo.FullName);
-        var newItem = ScriptableObject.CreateInstance<ItemDataWrapper>();
-        JsonUtility.FromJsonOverwrite(json, newItem);
-        if (string.IsNullOrWhiteSpace(newItem.Id))
-        {
-            newItem.Id = Guid.NewGuid().ToString().ToLower();
-            Plugin.Logger.LogWarning($"[{nameof(CreateCardClonesPrefix)}] Item: '{newItem.Id}' is missing the required field 'id'. Path: {itemFileInfo.FullName}");
-            return null;
-        }
-        else if (RegexUtils.HasInvalidIdRegex.IsMatch(newItem.Id))
-        {
-            Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Item: '{newItem.Id} has an invalid Id: {newItem.Id}, ids should only consist of letters and numbers.");
-            return null;
-        }
-        else
-        {
-            newItem.Id = newItem.Id.ToLower();
-        }
-
-        return newItem;
-    }
-
     /// <summary>
     /// Loads the custom cards json file from disk, using <see cref="JsonUtility"/> to deserialize onto an existing object.
     /// </summary>
@@ -275,12 +238,12 @@ public class CreateCardClonesPrefix
             if (string.IsNullOrWhiteSpace(newCard.Id))
             {
                 newCard.Id = Guid.NewGuid().ToString().ToLower();
-                Plugin.Logger.LogWarning($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' is missing the required field 'id'. Path: {cardFileInfo.FullName}");
+                Plugin.LogWarning($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' is missing the required field 'id'. Path: {cardFileInfo.FullName}");
                 newCard.CardName = "Missing ID";
             }
             else if (RegexUtils.HasInvalidIdRegex.IsMatch(newCard.Id))
             {
-                Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
+                Plugin.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
                 return null;
             }
             else
@@ -293,17 +256,17 @@ public class CreateCardClonesPrefix
         {
             if (RegexUtils.HasInvalidIdRegex.IsMatch(newCard.itemId))
             {
-                Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an invalid {nameof(newCard.itemId)}: {newCard.itemId}, ids should only consist of letters and numbers.");
+                Plugin.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an invalid {nameof(newCard.itemId)}: {newCard.itemId}, ids should only consist of letters and numbers.");
                 return null;
             }
             else if (newCard.CardClass != CardClass.Item)
             {
-                Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an {nameof(newCard.itemId)} defined but has an invalid {nameof(newCard.CardClass)}: {newCard.CardClass}.");
+                Plugin.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an {nameof(newCard.itemId)} defined but has an invalid {nameof(newCard.CardClass)}: {newCard.CardClass}.");
                 return null;
             }
             else if (!ValidItemCardTypes.Contains(newCard.CardType))
             {
-                Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an {nameof(newCard.itemId)} defined but has an invalid {nameof(newCard.CardType)}: {newCard.CardType}, this should be one of the item types.");
+                Plugin.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an {nameof(newCard.itemId)} defined but has an invalid {nameof(newCard.CardType)}: {newCard.CardType}, this should be one of the item types.");
                 return null;
             }
 
@@ -316,7 +279,7 @@ public class CreateCardClonesPrefix
             }
             else
             {
-                Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an {nameof(newCard.itemId)}: {newCard.itemId} defined but cannot be found.");
+                Plugin.LogError($"[{nameof(CreateCardClonesPrefix)}] Card: '{newCard.CardName}' has an {nameof(newCard.itemId)}: {newCard.itemId} defined but cannot be found.");
                 return null;
             }
 
@@ -327,7 +290,7 @@ public class CreateCardClonesPrefix
             // validate upgraded cards
             if (string.IsNullOrWhiteSpace(newCard.BaseCard))
             {
-                Plugin.Logger.LogError($"[{nameof(CreateCardClonesPrefix)}] Custom card '{newCard.CardName}' is upgrade type '{newCard.CardUpgraded}', but is missing 'baseCard' field in json.");
+                Plugin.LogError($"[{nameof(CreateCardClonesPrefix)}] Custom card '{newCard.CardName}' is upgrade type '{newCard.CardUpgraded}', but is missing 'baseCard' field in json.");
                 return null;
             }
         }
