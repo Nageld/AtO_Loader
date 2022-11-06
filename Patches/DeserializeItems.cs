@@ -13,14 +13,19 @@ public class DeserializeItems
     /// </summary>
     public static Dictionary<string, ItemDataWrapper> CustomItems { get; set; } = new();
 
-    [HarmonyPostfix]
+    [HarmonyPrefix]
     public static void LoadCustomItems(Dictionary<string, ItemData> ____ItemDataSource)
     {
-        var itemDatas = new ItemDataLoader(____ItemDataSource).LoadData();
-        foreach (var itemData in itemDatas)
+        CustomItems = new ItemDataLoader(____ItemDataSource).LoadData();
+
+    }
+
+    [HarmonyPostfix]
+    public static void AssignCustomItems(Dictionary<string, ItemData> ____ItemDataSource)
+    {
+        foreach (var itemData in CustomItems)
         {
             ____ItemDataSource[itemData.Key] = itemData.Value;
-            CustomItems[itemData.Key] = itemData.Value;
         }
     }
 }
