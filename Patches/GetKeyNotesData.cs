@@ -11,7 +11,7 @@ public class GetKeyNotesData
         if (id == null)
         {
             id = "vanish";
-            Plugin.LogError($"Property set incorrectly on a card");
+            Plugin.Logger.LogError($"Property set incorrectly on a card");
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using AtO_Loader.DataLoader.DataWrapper;
+﻿using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
 using System.Collections.Generic;
 
