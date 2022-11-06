@@ -6,7 +6,7 @@ using static Enums;
 
 namespace AtO_Loader.Patches.DataLoader;
 
-public class CardDataLoader : DataLoaderBase<CardDataWrapper>
+public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
 {
     /// <summary>
     /// List of valid item types.
@@ -40,6 +40,15 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper>
         [CardUpgraded.Rare] = "rare",
     };
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="CardDataLoader"/> class.
+    /// </summary>
+    /// <param name="dataSource">Data source for this loader.</param>
+    public CardDataLoader(Dictionary<string, CardData> dataSource)
+        : base(dataSource)
+    {
+    }
+
     /// <inheritdoc/>
     protected override string DirectoryName { get => "Cards"; }
 
@@ -59,12 +68,9 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper>
                 Plugin.LogError($"'{newCard.CardName}' has an invalid Id: {newCard.Id}, ids should only consist of letters and numbers.");
                 return false;
             }
-            else
-            {
-                newCard.Id = newCard.Id.ToLower();
-            }
         }
 
+        // if this card is an item card
         if (!string.IsNullOrWhiteSpace(newCard.itemId))
         {
             if (RegexUtils.HasInvalidIdRegex.IsMatch(newCard.itemId))
@@ -127,13 +133,15 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper>
                 continue;
             }
 
-            if (!datas.TryGetValue(card.BaseCard, out var baseCard))
+            if (!datas.TryGetValue(card.BaseCard, out var customCardCard) & !this.DataSource.TryGetValue(card.BaseCard, out var preExistingCard))
             {
                 Plugin.LogError($"Custom card '{card.CardName}' has a baseCard '{card.BaseCard}' but the baseCard does not exist, please check spelling or create a baseCard with that Id");
                 continue;
             }
 
-            switch (card.CardUpgraded)
+            var baseCard = (CardData)customCardCard ?? preExistingCard;
+
+            switch (baseCard.CardUpgraded)
             {
                 case CardUpgraded.A:
                     baseCard.UpgradesTo1 = card.Id;
@@ -149,19 +157,20 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper>
     }
 
     /// <inheritdoc/>
-    protected override void AddToDictionary(Dictionary<string, CardDataWrapper> datas, CardDataWrapper data)
+    protected override void ForLoopProcessing(Dictionary<string, CardDataWrapper> datas, CardDataWrapper data)
     {
+        Plugin.LogInfo($"{data.CardName} {data.Id} {data.BaseCard}");
         // if it isn't a multi class card.
         if ((int)data.CardClass != -1)
         {
-            base.AddToDictionary(datas, data);
+            base.ForLoopProcessing(datas, data);
         }
         else
         {
             foreach (var cardClass in MultiCardClasses)
             {
                 var cloneData = MultiClassCardUpdate(data, cardClass);
-                base.AddToDictionary(datas, cloneData);
+                base.ForLoopProcessing(datas, cloneData);
             }
 
             // Cleanup to destroy the base card with -1 card class.
@@ -182,17 +191,13 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper>
         var cardClassString = cardClass.ToString().ToLower();
         newCard.CardClass = cardClass;
 
-        if (newCard.CardUpgraded == CardUpgraded.No)
+        newCard.BaseCard = newCard.BaseCard.AppendNotNullOrWhiteSpace(cardClassString);
+        newCard.Id = newCard.BaseCard;
+
+        if (newCard.CardUpgraded != CardUpgraded.No)
         {
-            newCard.Id = newCard.Id.AppendNotNullOrWhiteSpace(cardClassString);
-            newCard.BaseCard = newCard.Id;
-        }
-        else
-        {
-            newCard.BaseCard = newCard.BaseCard
-                .AppendNotNullOrWhiteSpace(cardClassString)
-                .AppendNotNullOrWhiteSpace(CardUpgradeAppendString[newCard.CardUpgraded]);
             newCard.UpgradedFrom = newCard.BaseCard;
+            newCard.Id.AppendNotNullOrWhiteSpace(CardUpgradeAppendString[newCard.CardUpgraded]);
         }
 
         return newCard;

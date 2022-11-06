@@ -6,7 +6,7 @@
 public interface IDataWrapper
 {
     /// <summary>
-    /// Gets the id of the data object.
+    /// Gets or sets the id of the data object.
     /// </summary>
-    string GetID { get; }
+    string DataID { get; set; }
 }
