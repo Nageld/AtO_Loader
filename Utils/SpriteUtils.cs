@@ -1,7 +1,7 @@
 ﻿using AtO_Loader.DataLoader.DataWrapper;
 using System;
 using System.IO;
-using AtO_Loader.Patches.DataLoader.DataWrapper;
+using AtO_Loader.DataLoader.DataWrapper;
 using UnityEngine;
 
 namespace AtO_Loader.Utils
