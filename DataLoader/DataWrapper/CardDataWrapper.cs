@@ -7,5 +7,5 @@ public class CardDataWrapper : CardData, IDataWrapper
     public string itemId;
 
     /// <inheritdoc/>
-    public string GetID => this.Id;
+    public string DataID { get => this.Id; set => this.Id = value; }
 }
