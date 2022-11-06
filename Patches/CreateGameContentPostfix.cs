@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using AtO_Loader.Patches.DataLoader.DataWrapper;
 using HarmonyLib;
 
-namespace AtO_Loader.Patches.CustomDataLoader;
+namespace AtO_Loader.Patches;
 
 [HarmonyPatch(typeof(Globals), "CreateGameContent")]
 public class CreateGameContentPostfix
@@ -17,7 +18,7 @@ public class CreateGameContentPostfix
 
     private static void AddItemInternalDictionary(Dictionary<string, ItemData> itemDataSource, ItemDataWrapper newItem)
     {
-        Plugin.Logger.LogInfo($"[{nameof(CreateCardClonesPrefix)}] Loading Custom Item: {newItem.Id}");
+        Plugin.LogInfo($"[{nameof(CreateCardClonesPrefix)}] Loading Custom Item: {newItem.Id}");
 
         newItem.Id = newItem.Id.ToLower();
         itemDataSource[newItem.Id] = newItem;
