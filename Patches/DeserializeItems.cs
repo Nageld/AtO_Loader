@@ -1,7 +1,7 @@
-﻿using AtO_Loader.DataLoader.DataWrapper;
-using AtO_Loader.Patches.DataLoader;
+﻿using System.Collections.Generic;
+using AtO_Loader.DataLoader;
+using AtO_Loader.DataLoader.DataWrapper;
 using HarmonyLib;
-using System.Collections.Generic;
 
 namespace AtO_Loader.Patches;
 
@@ -17,7 +17,6 @@ public class DeserializeItems
     public static void LoadCustomItems(Dictionary<string, ItemData> ____ItemDataSource)
     {
         CustomItems = new ItemDataLoader(____ItemDataSource).LoadData();
-
     }
 
     [HarmonyPostfix]
