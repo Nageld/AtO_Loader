@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using BepInEx;
+using System.Collections.Generic;
 using System.IO;
-using BepInEx;
 
 namespace AtO_Loader.Utils
 {

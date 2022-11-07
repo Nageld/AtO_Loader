@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AtO_Loader.DataLoader.DataWrapper;
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -6,7 +7,7 @@ namespace AtO_Loader.Utils
 {
     public static class SpriteUtils
     {
-        public static void LoadSprite(this CardDataWrapper card, FileInfo cardFileInfo) 
+        public static void LoadSprite(this CardDataWrapper card, FileInfo cardFileInfo)
             => card.Sprite = LoadSprite(card.imageFileName, cardFileInfo);
 
         private static Sprite LoadSprite(string fileName, FileInfo fileInfo)
@@ -34,7 +35,7 @@ namespace AtO_Loader.Utils
             return sprite;
         }
 
-        private static Sprite TextureToSprite(Texture2D texture) 
+        private static Sprite TextureToSprite(Texture2D texture)
             => Sprite.Create(texture, new Rect(0f, 0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect);
     }
 }

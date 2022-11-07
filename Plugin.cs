@@ -1,11 +1,12 @@
 ﻿using AtO_Loader.Patches;
-using AtO_Loader.Patches.CustomDataLoader;
 using BepInEx;
-using BepInEx.Logging;
 using HarmonyLib;
 
 namespace AtO_Loader;
 
+/// <summary>
+/// Base plugin class to load all harmony patches.
+/// </summary>
 [BepInPlugin(ModGUID, ModName, ModVersion)]
 public partial class Plugin : BaseUnityPlugin
 {
@@ -15,15 +16,19 @@ public partial class Plugin : BaseUnityPlugin
     private readonly Harmony harmony = new(ModGUID);
 
     /// <summary>
-    /// Gets or sets harmony Logger instance.
+    /// Gets the log instance.
     /// </summary>
-    internal static new ManualLogSource Logger { get; set; }
+    public static Logger Logger { get; private set; }
 
+    /// <summary>
+    /// Unity awake method.
+    /// </summary>
     private void Awake()
     {
-        Plugin.Logger = base.Logger;
-        this.harmony.PatchAll(typeof(CreateCardClonesPrefix));
-        this.harmony.PatchAll(typeof(CreateCardClonesPostfix));
+        Logger = new Logger(base.Logger);
+        this.harmony.PatchAll(typeof(DeserializeItems));
+        this.harmony.PatchAll(typeof(DeserializeCards));
+        this.harmony.PatchAll(typeof(DeserializeSubClasses));
         this.harmony.PatchAll(typeof(IsCardUnlocked));
         this.harmony.PatchAll(typeof(GetKeyNotesData));
         this.harmony.PatchAll(typeof(LoadPlayerData));
