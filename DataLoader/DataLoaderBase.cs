@@ -1,12 +1,12 @@
-﻿using AtO_Loader.DataLoader.DataWrapper;
-using AtO_Loader.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using AtO_Loader.DataLoader.DataWrapper;
+using AtO_Loader.Utils;
 using UnityEngine;
 using static Enums;
 
-namespace AtO_Loader.Patches.DataLoader;
+namespace AtO_Loader.DataLoader;
 
 /// <summary>
 /// Abstract class that loads all json files into a specific scriptable object.

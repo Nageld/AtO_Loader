@@ -1,9 +1,9 @@
-﻿using AtO_Loader.DataLoader.DataWrapper;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using AtO_Loader.DataLoader.DataWrapper;
 using UnityEngine;
 
-namespace AtO_Loader.Patches.DataLoader;
+namespace AtO_Loader.DataLoader;
 
 public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassData>
 {

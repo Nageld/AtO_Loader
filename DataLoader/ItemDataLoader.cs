@@ -2,7 +2,7 @@
 using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
 
-namespace AtO_Loader.Patches.DataLoader;
+namespace AtO_Loader.DataLoader;
 
 public class ItemDataLoader : DataLoaderBase<ItemDataWrapper, ItemData>
 {

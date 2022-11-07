@@ -1,11 +1,12 @@
-﻿using AtO_Loader.DataLoader.DataWrapper;
-using AtO_Loader.Utils;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
+using AtO_Loader.DataLoader.DataWrapper;
+using AtO_Loader.Patches;
+using AtO_Loader.Utils;
 using UnityEngine;
 using static Enums;
 
-namespace AtO_Loader.Patches.DataLoader;
+namespace AtO_Loader.DataLoader;
 
 public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
 {
