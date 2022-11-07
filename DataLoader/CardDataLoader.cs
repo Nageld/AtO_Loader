@@ -223,5 +223,36 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
             data.Id = data.BaseCard.AppendNotNullOrWhiteSpace(CardUpgradeAppendString[data.CardUpgraded]);
             data.UpgradedFrom = data.BaseCard;
         }
+
+        this.UpdateCardAuras(data);
+    }
+
+    private void UpdateCardAuras(CardDataWrapper data)
+    {
+        data.SpecialAuraCurseNameGlobal = Globals.Instance.GetAuraCurseData(data.ispecialAuraCurseNameGlobal);
+        data.SpecialAuraCurseName1 = Globals.Instance.GetAuraCurseData(data.ispecialAuraCurseName1);
+        data.SpecialAuraCurseName2 = Globals.Instance.GetAuraCurseData(data.ispecialAuraCurseName2);
+        data.AcEnergyBonus = Globals.Instance.GetAuraCurseData(data.iacEnergyBonus);
+        data.AcEnergyBonus2 = Globals.Instance.GetAuraCurseData(data.iacEnergyBonus2);
+        data.HealAuraCurseSelf = Globals.Instance.GetAuraCurseData(data.ihealAuraCurseSelf);
+        data.HealAuraCurseName = Globals.Instance.GetAuraCurseData(data.ihealAuraCurseName);
+        data.HealAuraCurseName2 = Globals.Instance.GetAuraCurseData(data.ihealAuraCurseName2);
+        data.HealAuraCurseName3 = Globals.Instance.GetAuraCurseData(data.ihealAuraCurseName3);
+        data.HealAuraCurseName4 = Globals.Instance.GetAuraCurseData(data.ihealAuraCurseName4);
+        data.Aura = Globals.Instance.GetAuraCurseData(data.iaura);
+        data.AuraSelf = Globals.Instance.GetAuraCurseData(data.iauraSelf);
+        data.Aura2 = Globals.Instance.GetAuraCurseData(data.iaura2);
+        data.AuraSelf2 = Globals.Instance.GetAuraCurseData(data.iauraSelf2);
+        data.Aura3 = Globals.Instance.GetAuraCurseData(data.iaura3);
+        data.AuraSelf3 = Globals.Instance.GetAuraCurseData(data.iauraSelf3);
+        data.Curse = Globals.Instance.GetAuraCurseData(data.icurse);
+        data.CurseSelf = Globals.Instance.GetAuraCurseData(data.icurseSelf);
+        data.Curse2 = Globals.Instance.GetAuraCurseData(data.icurse2);
+        data.CurseSelf2 = Globals.Instance.GetAuraCurseData(data.icurseSelf2);
+        data.Curse3 = Globals.Instance.GetAuraCurseData(data.icurse3);
+        data.CurseSelf3 = Globals.Instance.GetAuraCurseData(data.icurseSelf3);
+        data.SummonAura = Globals.Instance.GetAuraCurseData(data.isummonAura);
+        data.SummonAura2 = Globals.Instance.GetAuraCurseData(data.isummonAura2);
+        data.SummonAura3 = Globals.Instance.GetAuraCurseData(data.isummonAura3);
     }
 }

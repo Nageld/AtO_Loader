@@ -1,6 +1,6 @@
-﻿using AtO_Loader.DataLoader.DataWrapper;
+﻿using System.Collections.Generic;
+using AtO_Loader.DataLoader.DataWrapper;
 using AtO_Loader.Utils;
-using System.Collections.Generic;
 
 namespace AtO_Loader.Patches.DataLoader;
 
@@ -33,5 +33,26 @@ public class ItemDataLoader : DataLoaderBase<ItemDataWrapper, ItemData>
         }
 
         return true;
+    }
+
+    protected override void ForLoopProcessing(Dictionary<string, ItemDataWrapper> datas, ItemDataWrapper data)
+    {
+        this.UpdateItemAuras(data);
+        base.ForLoopProcessing(datas, data);
+    }
+
+    private void UpdateItemAuras(ItemDataWrapper data)
+    {
+        data.AuraCurseSetted = Globals.Instance.GetAuraCurseData(data.iauraCurseSetted);
+        data.AuracurseBonus1 = Globals.Instance.GetAuraCurseData(data.iauracurseBonus1);
+        data.AuracurseBonus2 = Globals.Instance.GetAuraCurseData(data.iauracurseBonus2);
+        data.AuracurseImmune1 = Globals.Instance.GetAuraCurseData(data.iauracurseImmune1);
+        data.AuracurseGain1 = Globals.Instance.GetAuraCurseData(data.iauracurseGain1);
+        data.AuracurseGain2 = Globals.Instance.GetAuraCurseData(data.iauracurseGain2);
+        data.AuracurseGain3 = Globals.Instance.GetAuraCurseData(data.iauracurseGain3);
+        data.AuracurseGainSelf1 = Globals.Instance.GetAuraCurseData(data.iauracurseGainSelf1);
+        data.AuracurseGainSelf2 = Globals.Instance.GetAuraCurseData(data.iauracurseGainSelf2);
+        data.AuracurseCustomAC = Globals.Instance.GetAuraCurseData(data.iauracurseCustomAC);
+        data.AuracurseImmune2 = Globals.Instance.GetAuraCurseData(data.iauracurseImmune2);
     }
 }
