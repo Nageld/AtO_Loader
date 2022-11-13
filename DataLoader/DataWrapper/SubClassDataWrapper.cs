@@ -10,13 +10,13 @@ public class SubClassDataWrapper : SubClassData, IDataWrapper
     public string trait3BCard;
     public string startingItem;
 
+    /// <inheritdoc/>
+    public string DataID { get => this.SubClassName; set => this.SubClassName = value; }
+
     /// <summary>
     /// To prevent a null ref in <see cref="SubClassData"/>'s Awake.
     /// </summary>
     private void Awake()
     {
     }
-
-    /// <inheritdoc/>
-    public string DataID { get => this.SubClassName; set => this.SubClassName = value; }
 }

@@ -18,7 +18,7 @@ public partial class Plugin : BaseUnityPlugin
     /// <summary>
     /// Gets the log instance.
     /// </summary>
-    public static Logger Logger { get; private set; }
+    public static new Logger Logger { get; private set; }
 
     /// <summary>
     /// Unity awake method.
@@ -28,6 +28,7 @@ public partial class Plugin : BaseUnityPlugin
         Logger = new Logger(base.Logger);
         this.harmony.PatchAll(typeof(DeserializeItems));
         this.harmony.PatchAll(typeof(DeserializeCards));
+        this.harmony.PatchAll(typeof(DeserializeTraits));
         this.harmony.PatchAll(typeof(DeserializeSubClasses));
         this.harmony.PatchAll(typeof(IsCardUnlocked));
         this.harmony.PatchAll(typeof(GetKeyNotesData));

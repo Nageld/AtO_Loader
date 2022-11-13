@@ -5,9 +5,6 @@ public class ItemDataWrapper : ItemData, IDataWrapper
     // these must be fields and camel case is for consistency - blame JsonUtility
     public string imageFileName;
 
-    /// <inheritdoc/>
-    public string DataID { get => this.Id; set => this.Id = value; }
-
     // blame hans
     public string iauraCurseSetted;
     public string iauracurseBonus1;
@@ -20,4 +17,7 @@ public class ItemDataWrapper : ItemData, IDataWrapper
     public string iauracurseGainSelf2;
     public string iauracurseCustomAC;
     public string iauracurseImmune2;
+
+    /// <inheritdoc/>
+    public string DataID { get => this.Id; set => this.Id = value; }
 }

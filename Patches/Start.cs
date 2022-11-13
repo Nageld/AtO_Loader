@@ -6,7 +6,7 @@ namespace AtO_Loader.Patches;
 public class Start
 {
     [HarmonyPostfix]
-    static void SetPatch(ref string ___gameVersion)
+    public static void SetPatch(ref string ___gameVersion)
     {
         ___gameVersion = "m" + ___gameVersion;
     }

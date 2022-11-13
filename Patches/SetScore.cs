@@ -6,7 +6,7 @@ namespace AtO_Loader.Patches;
 public class SetScore
 {
     [HarmonyPrefix]
-    static bool SetPatch()
+    public static bool SetPatch()
     {
         return false;
     }

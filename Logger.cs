@@ -1,6 +1,6 @@
-﻿using AtO_Loader.Patches;
+﻿using System.Runtime.CompilerServices;
+using AtO_Loader.Patches;
 using BepInEx.Logging;
-using System.Runtime.CompilerServices;
 
 namespace AtO_Loader
 {

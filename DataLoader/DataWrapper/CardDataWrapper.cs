@@ -6,9 +6,6 @@ public class CardDataWrapper : CardData, IDataWrapper
     public string imageFileName;
     public string itemId;
 
-    /// <inheritdoc/>
-    public string DataID { get => this.Id; set => this.Id = value; }
-
     public string ispecialAuraCurseNameGlobal;
     public string ispecialAuraCurseName1;
     public string ispecialAuraCurseName2;
@@ -34,4 +31,7 @@ public class CardDataWrapper : CardData, IDataWrapper
     public string isummonAura;
     public string isummonAura2;
     public string isummonAura3;
+
+    /// <inheritdoc/>
+    public string DataID { get => this.Id; set => this.Id = value; }
 }

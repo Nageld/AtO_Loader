@@ -18,7 +18,7 @@ public class LoadPlayerData
     }
 
     /// <summary>
-    /// If there is no modded save we load the original save
+    /// If there is no modded save we load the original save.
     /// </summary>
     [HarmonyPostfix]
     public static void SetPatch(ref string ___saveGameExtension, ref string ___saveGameExtensionBK, ref PlayerData __result)
@@ -34,6 +34,5 @@ public class LoadPlayerData
         ___saveGameExtension = ".mato";
         ___saveGameExtensionBK = ".mbak";
         unmoddedSaveCheck = false;
-
     }
 }

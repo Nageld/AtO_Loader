@@ -6,7 +6,7 @@ namespace AtO_Loader.Patches;
 public class GetKeyNotesData
 {
     [HarmonyPrefix]
-    static void SetPatch(ref string id)
+    public static void SetPatch(ref string id)
     {
         if (id == null)
         {

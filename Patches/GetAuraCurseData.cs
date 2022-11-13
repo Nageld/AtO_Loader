@@ -9,7 +9,7 @@ public class GetAuraCurseData
     /// Blocks errors when checking card auras by handling null.
     /// </summary>
     [HarmonyPrefix]
-    static bool SetPatch(string id)
+    public static bool SetPatch(string id)
     {
         return id != null;
     }
