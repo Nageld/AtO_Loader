@@ -11,6 +11,16 @@ namespace AtO_Loader.DataLoader;
 public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
 {
     /// <summary>
+    /// Hardcoded dictionary for appending id's with, due to game using these templates names to find cards.
+    /// </summary>
+    public static readonly Dictionary<CardUpgraded, string> CardUpgradeAppendString = new()
+    {
+        [CardUpgraded.A] = "a",
+        [CardUpgraded.B] = "b",
+        [CardUpgraded.Rare] = "rare",
+    };
+
+    /// <summary>
     /// List of valid item types.
     /// </summary>
     private static readonly List<CardType> ValidItemCardTypes = new()
@@ -30,16 +40,6 @@ public class CardDataLoader : DataLoaderBase<CardDataWrapper, CardData>
         CardClass.Mage,
         CardClass.Healer,
         CardClass.Scout,
-    };
-
-    /// <summary>
-    /// Hardcoded dictionary for appending id's with, due to game using these templates names to find cards.
-    /// </summary>
-    private static readonly Dictionary<CardUpgraded, string> CardUpgradeAppendString = new()
-    {
-        [CardUpgraded.A] = "a",
-        [CardUpgraded.B] = "b",
-        [CardUpgraded.Rare] = "rare",
     };
 
     /// <summary>
