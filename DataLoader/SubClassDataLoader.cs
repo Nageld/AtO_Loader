@@ -8,6 +8,11 @@ namespace AtO_Loader.DataLoader;
 public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassData>
 {
     /// <summary>
+    /// TODO: Remove this when we get fully custom characters.
+    /// </summary>
+    private SubClassData sourceData;
+
+    /// <summary>
     /// Initializes a new instance of the <see cref="SubClassDataLoader"/> class.
     /// </summary>
     /// <param name="dataSource">Data source fo this loader.</param>
@@ -38,21 +43,24 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
         var data = ScriptableObject.CreateInstance<SubClassDataWrapper>();
         JsonUtility.FromJsonOverwrite(json, data);
         data.SubClassName = data.SubClassName.ToLower();
+
+        // TODO: Remove this when we get fully custom characters.
+        // ======================================================
+        if (!this.DataSource.TryGetValue(data.SubClassName, out this.sourceData))
+        {
+            Plugin.Logger.LogError($"Attempted to mod a character that doesn't exist. Id: {data.SubClassName}");
+            return null;
+        }
+
+        JsonUtility.FromJsonOverwrite(json, this.sourceData);
+
+        // ======================================================
         return this.ValidateData(data) ? data : null;
     }
 
     /// <inheritdoc/>
     protected override void ForLoopProcessing(Dictionary<string, SubClassDataWrapper> datas, SubClassDataWrapper data)
     {
-        // TODO: Remove this when we get fully custom characters.
-        // ======================================================
-        if (!this.DataSource.TryGetValue(data.SubClassName, out var sourceData))
-        {
-            Plugin.Logger.LogError($"Attempted to mod a character that doesn't exist. Id: {data.SubClassName}");
-            return;
-        }
-
-        // ======================================================
         var subClassName = data.SubClassName;
 
         if (data.cardCounts?.Length > 0 && data.cardIds?.Length > 0)
@@ -82,7 +90,7 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
 
             if (heroCardsList.Count > 0)
             {
-                sourceData.Cards = heroCardsList.ToArray();
+                this.sourceData.Cards = heroCardsList.ToArray();
             }
             else
             {
@@ -99,8 +107,8 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
             else
             {
                 Plugin.Logger.LogInfo($"Set trait 1A for {subClassName} to {data.trait1ACard}");
-                sourceData.Trait1ACard = Globals.Instance.GetCardData(data.trait1ACard);
-                sourceData.Trait1A.TraitCard = Globals.Instance.GetCardData(data.trait1ACard);
+                this.sourceData.Trait1ACard = Globals.Instance.GetCardData(data.trait1ACard);
+                this.sourceData.Trait1A.TraitCard = Globals.Instance.GetCardData(data.trait1ACard);
             }
         }
 
@@ -113,8 +121,8 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
             else
             {
                 Plugin.Logger.LogInfo($"Set trait 1B for {subClassName} to {data.trait1BCard}");
-                sourceData.Trait1BCard = Globals.Instance.GetCardData(data.trait1BCard);
-                sourceData.Trait1B.TraitCard = Globals.Instance.GetCardData(data.trait1BCard);
+                this.sourceData.Trait1BCard = Globals.Instance.GetCardData(data.trait1BCard);
+                this.sourceData.Trait1B.TraitCard = Globals.Instance.GetCardData(data.trait1BCard);
             }
         }
 
@@ -127,8 +135,8 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
             else
             {
                 Plugin.Logger.LogInfo($"Set trait 3A for {subClassName} to {data.trait3ACard}");
-                sourceData.Trait3ACard = Globals.Instance.GetCardData(data.trait3ACard);
-                sourceData.Trait3A.TraitCard = Globals.Instance.GetCardData(data.trait3ACard);
+                this.sourceData.Trait3ACard = Globals.Instance.GetCardData(data.trait3ACard);
+                this.sourceData.Trait3A.TraitCard = Globals.Instance.GetCardData(data.trait3ACard);
             }
         }
 
@@ -141,24 +149,22 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
             else
             {
                 Plugin.Logger.LogInfo($"Set trait 3B for {subClassName} to {data.trait3BCard}");
-                sourceData.Trait3BCard = Globals.Instance.GetCardData(data.trait3BCard);
-                sourceData.Trait3B.TraitCard = Globals.Instance.GetCardData(data.trait3BCard);
+                this.sourceData.Trait3BCard = Globals.Instance.GetCardData(data.trait3BCard);
+                this.sourceData.Trait3B.TraitCard = Globals.Instance.GetCardData(data.trait3BCard);
             }
         }
 
-        if (data.startingItem == null)
+        if (data.startingItem != null)
         {
-            return;
-        }
-
-        if (Globals.Instance.GetCardData(data.startingItem) == null)
-        {
-            Plugin.Logger.LogInfo($"Invalid starting item for {subClassName} of item {data.startingItem}");
-        }
-        else
-        {
-            Plugin.Logger.LogInfo($"Set starting item for {subClassName} to {data.startingItem}");
-            sourceData.Item = Globals.Instance.GetCardData(data.startingItem);
+            if (Globals.Instance.GetCardData(data.startingItem) == null)
+            {
+                Plugin.Logger.LogInfo($"Invalid starting item for {subClassName} of item {data.startingItem}");
+            }
+            else
+            {
+                Plugin.Logger.LogInfo($"Set starting item for {subClassName} to {data.startingItem}");
+                this.sourceData.Item = Globals.Instance.GetCardData(data.startingItem);
+            }
         }
 
         // TODO: Remove this when we get fully custom characters.
