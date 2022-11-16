@@ -107,12 +107,13 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
             for (var i = 0; i < data.cardIds.Length; i++)
             {
                 var heroCards = new HeroCards();
-                if (Globals.Instance.GetCardData(data.cardIds[i]) == null)
+                var card = Globals.Instance.GetCardData(data.cardIds[i], true);
+                if (card == null)
                 {
                     continue;
                 }
 
-                heroCards.Card = Globals.Instance.GetCardData(data.cardIds[i]);
+                heroCards.Card = card;
                 if (heroCards.Card != null)
                 {
                     heroCards.UnitsInDeck = data.cardCounts[i];
@@ -187,7 +188,7 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
             return true;
         }
 
-        card = Globals.Instance.GetCardData(cardId);
+        card = Globals.Instance.GetCardData(cardId, false);
         if (card == null)
         {
             return false;
@@ -209,25 +210,25 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
         }
 
         card.BaseCard = card.Id;
-        card.Starter = true;
+        card.Starter = clone;
 
         if (string.IsNullOrWhiteSpace(card.UpgradesTo2))
         {
             var cardIdToClone = string.IsNullOrWhiteSpace(card.UpgradesTo1) ? cardId : card.UpgradesTo1;
-            var upgrade2Card = this.GetCleanUpgradeCard(cardIdToClone, card.Id, CardUpgraded.B);
+            var upgrade2Card = this.GetCleanUpgradeCard(cardIdToClone, card.Id, CardUpgraded.B, clone);
             card.UpgradesTo2 = upgrade2Card.Id;
         }
 
         if (string.IsNullOrWhiteSpace(card.UpgradesTo1))
         {
-            var upgrade1Card = this.GetCleanUpgradeCard(cardId, card.Id, CardUpgraded.A);
+            var upgrade1Card = this.GetCleanUpgradeCard(cardId, card.Id, CardUpgraded.A, clone);
             card.UpgradesTo1 = upgrade1Card.Id;
         }
 
         return true;
     }
 
-    private CardData GetCleanUpgradeCard(string cardIdToClone, string baseCardId, CardUpgraded cardUpgraded)
+    private CardData GetCleanUpgradeCard(string cardIdToClone, string baseCardId, CardUpgraded cardUpgraded, bool isClone)
     {
         var card = Globals.Instance.GetCardData(cardIdToClone, true);
         card.Id = baseCardId + CardDataLoader.CardUpgradeAppendString[cardUpgraded];
@@ -236,7 +237,7 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
         card.UpgradesTo2 = string.Empty;
         card.UpgradedFrom = baseCardId;
         card.ShowInTome = false;
-        card.Starter = true;
+        card.Starter = isClone;
         Globals.Instance.Cards[card.Id] = card;
 
         return card;
