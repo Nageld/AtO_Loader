@@ -62,101 +62,37 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
             return false;
         }
 
-        if (data.trait1ACard != null && !this.TryGetClonedCardData(data.trait1ACard, out this.trait1ACardData))
+        if (data.trait1ACard != null && !this.TryGetClonedCardData(data.trait1ACard, true, out this.trait1ACardData))
         {
             Plugin.Logger.LogInfo($"Invalid trait 1A for {data.SubClassName} of card {data.trait1ACard}");
             return false;
         }
 
-        if (data.trait1BCard != null && !this.TryGetClonedCardData(data.trait1BCard, out this.trait1BCardData))
+        if (data.trait1BCard != null && !this.TryGetClonedCardData(data.trait1BCard, true, out this.trait1BCardData))
         {
             Plugin.Logger.LogInfo($"Invalid trait 1B for {data.SubClassName} of card {data.trait1BCard}");
             return false;
         }
 
-        if (data.trait3ACard != null && !this.TryGetClonedCardData(data.trait3ACard, out this.trait3ACardData))
+        if (data.trait3ACard != null && !this.TryGetClonedCardData(data.trait3ACard, true, out this.trait3ACardData))
         {
             Plugin.Logger.LogInfo($"Invalid trait 3A for {data.SubClassName} of card {data.trait3ACard}");
             return false;
         }
 
-        if (data.trait3BCard != null && !this.TryGetClonedCardData(data.trait3BCard, out this.trait3BCardData))
+        if (data.trait3BCard != null && !this.TryGetClonedCardData(data.trait3BCard, true, out this.trait3BCardData))
         {
             Plugin.Logger.LogInfo($"Invalid trait 3B for {data.SubClassName} of card {data.trait3BCard}");
             return false;
         }
 
-        if (data.startingItem != null && !this.TryGetClonedCardData(data.startingItem, out this.startingItemCardData))
+        if (data.startingItem != null && !this.TryGetClonedCardData(data.startingItem, false, out this.startingItemCardData))
         {
             Plugin.Logger.LogInfo($"Invalid starting item for {data.SubClassName} of item {data.startingItem}");
             return false;
         }
 
         return true;
-    }
-
-    /// <summary>
-    /// Clones cards so they always work with the character trait level upgrades.
-    /// </summary>
-    /// <param name="cardId">Id of card to be cloned.</param>
-    /// <returns>Whether or not the card exists.</returns>
-    private bool TryGetClonedCardData(string cardId, out CardData card)
-    {
-        card = null;
-        if (cardId == null)
-        {
-            return true;
-        }
-
-        card = Globals.Instance.GetCardData(cardId);
-
-        // if both upgrades are already set we don't need to do the whole cloning mess.
-        if (!string.IsNullOrWhiteSpace(card.UpgradesTo1) && !string.IsNullOrWhiteSpace(card.UpgradesTo2))
-        {
-            return true;
-        }
-
-        // clone the card so we can modify it without affecting other cards
-        card = Globals.Instance.GetCardData(cardId, true);
-        if (card == null)
-        {
-            return false;
-        }
-
-        card.Id += "clonedstarter";
-        card.BaseCard = card.Id;
-        card.Starter = true;
-        card.ShowInTome = false;
-        Globals.Instance.Cards[card.Id] = card;
-
-        if (string.IsNullOrWhiteSpace(card.UpgradesTo2))
-        {
-            var upgrade2Card = this.GetCleanUpgradeCard(string.IsNullOrWhiteSpace(card.UpgradesTo1) ? cardId : card.UpgradesTo1, CardUpgraded.B);
-            card.UpgradesTo2 = upgrade2Card.Id;
-        }
-
-        if (string.IsNullOrWhiteSpace(card.UpgradesTo1))
-        {
-            var upgrade1Card = this.GetCleanUpgradeCard(cardId, CardUpgraded.A);
-            card.UpgradesTo1 = upgrade1Card.Id;
-        }
-
-        return true;
-    }
-
-    private CardData GetCleanUpgradeCard(string cardId, CardUpgraded cardUpgraded)
-    {
-        var card = Globals.Instance.GetCardData(cardId, true);
-        card.Id += "clonedstarter" + CardDataLoader.CardUpgradeAppendString[cardUpgraded];
-        card.BaseCard = cardId + "clonedstarter";
-        card.UpgradesTo1 = string.Empty;
-        card.UpgradesTo2 = string.Empty;
-        card.UpgradedFrom = cardId + "clonedstarter";
-        card.ShowInTome = false;
-        card.Starter = true;
-        Globals.Instance.Cards[card.Id] = card;
-
-        return card;
     }
 
     /// <inheritdoc/>
@@ -171,12 +107,13 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
             for (var i = 0; i < data.cardIds.Length; i++)
             {
                 var heroCards = new HeroCards();
-                if (Globals.Instance.GetCardData(data.cardIds[i]) == null)
+                var card = Globals.Instance.GetCardData(data.cardIds[i], true);
+                if (card == null)
                 {
                     continue;
                 }
 
-                heroCards.Card = Globals.Instance.GetCardData(data.cardIds[i]);
+                heroCards.Card = card;
                 if (heroCards.Card != null)
                 {
                     heroCards.UnitsInDeck = data.cardCounts[i];
@@ -235,5 +172,74 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
 
         // TODO: Remove this when we get fully custom characters.
         Object.Destroy(data);
+    }
+
+    /// <summary>
+    /// Clones cards so they always work with the character trait level upgrades.
+    /// </summary>
+    /// <param name="cardId">Id of card to be cloned.</param>
+    /// <param name="clone">Whether or not to clone the card.</param>
+    /// <returns>Whether or not the card exists.</returns>
+    private bool TryGetClonedCardData(string cardId, bool clone, out CardData card)
+    {
+        card = null;
+        if (cardId == null)
+        {
+            return true;
+        }
+
+        card = Globals.Instance.GetCardData(cardId, false);
+        if (card == null)
+        {
+            return false;
+        }
+
+        // if both upgrades are already set we don't need to do the whole cloning mess.
+        if (!string.IsNullOrWhiteSpace(card.UpgradesTo1) && !string.IsNullOrWhiteSpace(card.UpgradesTo2))
+        {
+            return true;
+        }
+
+        // clone the card so we can modify it without affecting the base card
+        if (clone)
+        {
+            card = Globals.Instance.GetCardData(cardId, true);
+            card.Id += "clonedstarter";
+            card.ShowInTome = false;
+            Globals.Instance.Cards[card.Id] = card;
+        }
+
+        card.BaseCard = card.Id;
+        card.Starter = clone;
+
+        if (string.IsNullOrWhiteSpace(card.UpgradesTo2))
+        {
+            var cardIdToClone = string.IsNullOrWhiteSpace(card.UpgradesTo1) ? cardId : card.UpgradesTo1;
+            var upgrade2Card = this.GetCleanUpgradeCard(cardIdToClone, card.Id, CardUpgraded.B, clone);
+            card.UpgradesTo2 = upgrade2Card.Id;
+        }
+
+        if (string.IsNullOrWhiteSpace(card.UpgradesTo1))
+        {
+            var upgrade1Card = this.GetCleanUpgradeCard(cardId, card.Id, CardUpgraded.A, clone);
+            card.UpgradesTo1 = upgrade1Card.Id;
+        }
+
+        return true;
+    }
+
+    private CardData GetCleanUpgradeCard(string cardIdToClone, string baseCardId, CardUpgraded cardUpgraded, bool isClone)
+    {
+        var card = Globals.Instance.GetCardData(cardIdToClone, true);
+        card.Id = baseCardId + CardDataLoader.CardUpgradeAppendString[cardUpgraded];
+        card.BaseCard = baseCardId;
+        card.UpgradesTo1 = string.Empty;
+        card.UpgradesTo2 = string.Empty;
+        card.UpgradedFrom = baseCardId;
+        card.ShowInTome = false;
+        card.Starter = isClone;
+        Globals.Instance.Cards[card.Id] = card;
+
+        return card;
     }
 }
