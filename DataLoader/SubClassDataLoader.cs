@@ -2,6 +2,7 @@
 using System.IO;
 using AtO_Loader.DataLoader.DataWrapper;
 using UnityEngine;
+using static Enums;
 
 namespace AtO_Loader.DataLoader;
 
@@ -128,29 +129,28 @@ public class SubClassDataLoader : DataLoaderBase<SubClassDataWrapper, SubClassDa
         card.ShowInTome = false;
         Globals.Instance.Cards[card.Id] = card;
 
-        if (string.IsNullOrWhiteSpace(card.UpgradesTo1))
-        {
-            var upgrade1Card = this.GetCleanUpgradeCard(cardId, Enums.CardUpgraded.A);
-            card.UpgradesTo1 = upgrade1Card.Id;
-        }
-
         if (string.IsNullOrWhiteSpace(card.UpgradesTo2))
         {
-            var upgrade2Card = this.GetCleanUpgradeCard(cardId, Enums.CardUpgraded.B);
+            var upgrade2Card = this.GetCleanUpgradeCard(string.IsNullOrWhiteSpace(card.UpgradesTo1) ? cardId : card.UpgradesTo1, CardUpgraded.B);
             card.UpgradesTo2 = upgrade2Card.Id;
+        }
+
+        if (string.IsNullOrWhiteSpace(card.UpgradesTo1))
+        {
+            var upgrade1Card = this.GetCleanUpgradeCard(cardId, CardUpgraded.A);
+            card.UpgradesTo1 = upgrade1Card.Id;
         }
 
         return true;
     }
 
-    private CardData GetCleanUpgradeCard(string cardId, Enums.CardUpgraded cardUpgraded)
+    private CardData GetCleanUpgradeCard(string cardId, CardUpgraded cardUpgraded)
     {
         var card = Globals.Instance.GetCardData(cardId, true);
         card.Id += "clonedstarter" + CardDataLoader.CardUpgradeAppendString[cardUpgraded];
         card.BaseCard = cardId + "clonedstarter";
         card.UpgradesTo1 = string.Empty;
         card.UpgradesTo2 = string.Empty;
-        card.CardUpgraded = cardUpgraded;
         card.UpgradedFrom = cardId + "clonedstarter";
         card.ShowInTome = false;
         card.Starter = true;
