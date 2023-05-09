@@ -32,6 +32,12 @@ public class DeserializeCards
         var cardDatas = new CardDataLoader(____CardsSource).LoadData();
         foreach (var cardData in cardDatas)
         {
+            // mark if the card is a new addition (i.e. it's not a tweak to an existing card)
+            if (!____CardsSource.ContainsKey(cardData.Key))
+            {
+                Data.IDs.CustomCardIDsNew.Add(cardData.Key);
+            }
+
             ____CardsSource[cardData.Key] = cardData.Value;
             ___cardsText = string.Concat(new string[]
             {

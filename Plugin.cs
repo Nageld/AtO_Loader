@@ -31,7 +31,7 @@ public partial class Plugin : BaseUnityPlugin
         this.harmony.PatchAll(typeof(DeserializeSubClasses));
         this.harmony.PatchAll(typeof(IsCardUnlocked));
         this.harmony.PatchAll(typeof(GetKeyNotesData));
-        this.harmony.PatchAll(typeof(LoadPlayerData));
+        //this.harmony.PatchAll(typeof(LoadPlayerData));
         this.harmony.PatchAll(typeof(SetScore));
         this.harmony.PatchAll(typeof(SetWeeklyScore));
         this.harmony.PatchAll(typeof(SetObeliskScore));
