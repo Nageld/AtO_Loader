@@ -1,5 +1,4 @@
 ﻿using HarmonyLib;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AtO_Loader.Patches;
 
